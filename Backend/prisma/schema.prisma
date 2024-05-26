@@ -1,0 +1,101 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  firstName String
+  lastName  String
+  email     String    @unique
+  password  String
+  vehicles  Vehicle[]
+  sellers   Seller[]
+}
+
+model Vehicle {
+  vehicleId     Int    @id @default(autoincrement())
+  user          User   @relation(fields: [userId], references: [id])
+  userId        Int
+  model         String
+  year          Int
+  milagePerWeek Int
+  licenceDate   String
+  insuranceDate String
+
+  @@map("vehicle")
+}
+
+model Seller {
+  user        User   @relation(fields: [userId], references: [id])
+  userId      Int
+  companyName String
+  address     String
+
+  @@id([userId])
+  @@map("seller")
+}
+
+model ServiceStation {
+  sellerId Int
+  name     String
+  address  String
+
+  @@id([sellerId, name])
+  @@map("serviceStation")
+}
+
+model SparePart {
+  sparePartId Int    @id
+  sellerId    Int
+  price       Int
+  model       String
+  origin      String
+  year        Int
+  description String
+
+  @@map("sparePart")
+}
+
+model Service {
+  serviceId   Int    @id
+  sellerId    Int
+  serviceName String
+  vehicleType String
+
+  @@map("service")
+}
+
+model ServiceServiceStation {
+  sellerId  Int
+  serviceId Int
+
+  @@id([sellerId, serviceId])
+  @@map("serviceServiceStation")
+}
+
+model UserSparePart {
+  userId      Int
+  sparePartId Int
+
+  @@id([userId, sparePartId])
+  @@map("userSparePart")
+}
+
+model UserService {
+  userId    Int
+  serviceId Int
+
+  @@id([userId, serviceId])
+  @@map("userService")
+}
