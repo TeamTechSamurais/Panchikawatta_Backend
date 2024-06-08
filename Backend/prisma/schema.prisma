@@ -63,6 +63,7 @@ model SparePart {
   origin      String
   year        Int
   description String
+  image       Bytes?
 
   @@map("sparePart")
 }
