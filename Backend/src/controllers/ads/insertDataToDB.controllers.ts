@@ -18,6 +18,7 @@ app.post('/api/spare-parts', upload.single('image'), async (req: Request, res: R
     try {
         const sparePart = await prisma.sparePart.create({
             data: {
+                sparePartId: 1, // Replace with the appropriate sparePartId value
                 sellerId: parseInt(sellerId),
                 price: parseInt(price),
                 model,
