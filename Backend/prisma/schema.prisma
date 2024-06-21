@@ -14,64 +14,94 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  firstName String
-  lastName  String
-  email     String    @unique
-  password  String
-  vehicles  Vehicle[]
-  sellers   Seller[]
+  id         Int         @id @default(autoincrement())
+  firstName  String
+  lastName   String
+  userName   String
+  email      String      @unique
+  password   String
+  phoneNo    String
+  province   String?
+  district   String?
+  vehicles   Vehicle[]
+  sellers    Seller[]
+  spareParts SparePart[]
+  services   Service[]
+  deletedAt  DateTime?
+  createdAt  DateTime    @default(now())
 }
 
 model Vehicle {
-  vehicleId     Int    @id @default(autoincrement())
-  user          User   @relation(fields: [userId], references: [id])
-  userId        Int
-  model         String
-  year          Int
-  milagePerWeek Int
-  licenceDate   String
-  insuranceDate String
+  vehicleId        Int    @id @default(autoincrement())
+  user             User   @relation(fields: [userId], references: [id])
+  userId           Int
+  type             String
+  make             String
+  model            String
+  year             Int
+  milagePerWeek    Int
+  licenceDate      String
+  insuranceDate    String
+  lastServiceDate  String
+  batteryCondition String
 
   @@map("vehicle")
 }
 
 model Seller {
-  user        User   @relation(fields: [userId], references: [id])
-  userId      Int
-  companyName String
-  address     String
+  user                User   @relation(fields: [userId], references: [id])
+  userId              Int
+  businessName        String
+  businessAddress     String
+  businessPhoneNo     String
+  businessDescription String
 
   @@id([userId])
   @@map("seller")
 }
 
 model ServiceStation {
-  sellerId Int
-  name     String
-  address  String
+  sellerId  Int
+  name      String
+  address   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@id([sellerId, name])
   @@map("serviceStation")
 }
 
 model SparePart {
-  sparePartId Int    @id
+  sparePartId Int       @id @default(autoincrement())
   sellerId    Int
+  title       String
+  description String
+  image       Bytes?
   price       Int
+  make        String
   model       String
   origin      String
+  condition   String
+  fuel        String
   year        Int
-  description String
+  user        User?     @relation(fields: [userId], references: [id])
+  userId      Int?
+  deletedAt   DateTime?
+  createdAt   DateTime  @default(now())
 
   @@map("sparePart")
 }
 
 model Service {
-  serviceId   Int    @id
+  serviceId   Int       @id @default(autoincrement())
   sellerId    Int
-  serviceName String
-  vehicleType String
+  title       String
+  description String
+  image       Bytes?
+  user        User?     @relation(fields: [userId], references: [id])
+  userId      Int?
+  deletedAt   DateTime? // Soft delete field
+  createdAt   DateTime  @default(now())
 
   @@map("service")
 }
@@ -79,6 +109,7 @@ model Service {
 model ServiceServiceStation {
   sellerId  Int
   serviceId Int
+  createdAt DateTime @default(now())
 
   @@id([sellerId, serviceId])
   @@map("serviceServiceStation")
@@ -87,6 +118,7 @@ model ServiceServiceStation {
 model UserSparePart {
   userId      Int
   sparePartId Int
+  createdAt   DateTime @default(now())
 
   @@id([userId, sparePartId])
   @@map("userSparePart")
@@ -95,7 +127,18 @@ model UserSparePart {
 model UserService {
   userId    Int
   serviceId Int
+  createdAt DateTime @default(now())
 
   @@id([userId, serviceId])
   @@map("userService")
 }
+
+model Admin {
+  adminID       String @id
+  email         String
+  adminUsername String
+  password      String
+
+  @@map("admin")
+}
+
