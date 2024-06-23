@@ -1,16 +1,13 @@
 import express from 'express';
-import { PrismaClient } from '@prisma/client';
-import { getAllSpareParts } from './controllers/spare_parts/showAllParts.controllers';
-import { getSparePartById } from './controllers/spare_parts/getPartById.controller';
-const prisma = new PrismaClient();
+import adminRoutes from './routes/adminRoutes'; // Ensure the path is correct
 
 const app = express();
-
-app.get('/all-spare-parts', getAllSpareParts);
-app.get('/spare-parts/:id', getSparePartById);
-
-
 const PORT = process.env.PORT || 8000;
+
+app.use(express.json()); // Add middleware to parse JSON
+
+// Register routes
+app.use('/admin', adminRoutes); // Assuming your routes are set up with a base path of /admin
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
