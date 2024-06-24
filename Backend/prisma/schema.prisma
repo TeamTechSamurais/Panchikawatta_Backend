@@ -133,7 +133,8 @@ model Admin {
   email         String
   adminUsername String
   password      String
-  address       String
-
+  
+  
   @@map("admin")
 }
+

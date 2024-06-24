@@ -1,8 +1,9 @@
 import { Router } from 'express';
-import { getAdminDetails } from '../controllers/admin/adminController'; // Ensure the path is correct
+import { getAdminData } from '../controllers/admin/adminController'; 
 
 const router = Router();
 
-router.get('/details', getAdminDetails);
+router.get('/details', getAdminData);
+
 
 export default router;
