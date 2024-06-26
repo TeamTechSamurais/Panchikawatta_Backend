@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
+import { title } from "process";
 
 const prisma = new PrismaClient();
 
@@ -14,7 +15,7 @@ export async function searchSparePartsByName(req: Request, res: Response) {
         const spareParts = await prisma.sparePart.findMany({
             where: {
                 model: {
-                    //contains: name,
+                    contains: title as string,
                     mode: 'insensitive'
                 }
             }
