@@ -134,7 +134,6 @@ model Admin {
   adminUsername String
   password      String
   
-  
   @@map("admin")
 }
 
