@@ -1,12 +1,14 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import { getAdminData } from './controllers/admin/adminController';
+import { getSellersProvinces } from './controllers/admin/sellers/sellersController';
 
 const prisma = new PrismaClient();
 
 const app = express();
 
 app.get('/api/details', getAdminData);
+app.get('/api/seller', getSellersProvinces);
 
 
 const PORT = process.env.PORT || 8000;
