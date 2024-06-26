@@ -1,17 +1,19 @@
 import { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
+import { title } from 'process';
 
 const prisma = new PrismaClient();
 
-export const getVehicles = async (req: Request, res: Response) => {
+//To display all ads from DB
+export const getSpareparts = async (req: Request, res: Response) => {
   try {
-    const vehicles = await prisma.vehicle.findMany({
+    const sparePart = await prisma.sparePart.findMany({
       orderBy: {
-        vehicleId: 'desc'
+        sparePartId: 'desc'
       },
       take: 8
     });
-    res.json(vehicles);
+    res.json(sparePart);
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
