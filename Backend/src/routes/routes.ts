@@ -8,12 +8,14 @@ import { configureLoginRoutes } from './spare_parts/loging.routes';
 import { configureChatRoutes } from './spare_parts/chat.routes';
 import { configureAddDataRoutes } from './spare_parts/addData.routes';
 import { configureAdPostingRoutes } from './spare_parts/postSparepart.routes';
+import { configureVehicleRoutes } from './spare_parts/viewReminder.routes';
 
 export function userRoutes(app: Express): void {
   app.use(express.json());
   const users = Router();
   configureServiceRoutes(users);
   configureSparePartsRoutes(users);
+  configureVehicleRoutes(users);
   app.use('/users', users);
 }
 

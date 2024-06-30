@@ -21,6 +21,8 @@ export const createUser = async (req: Request, res: Response) => {
         firstName,
         lastName,
         password,
+        userName: 'your_username', // Provide a value for userName
+        phoneNo: 'your_phone_number', // Provide a value for phoneNo
       },
     });
     res.status(201).json(user);

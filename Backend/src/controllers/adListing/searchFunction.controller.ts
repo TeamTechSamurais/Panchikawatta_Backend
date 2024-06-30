@@ -11,7 +11,7 @@ export const getSpareparts = async (req: Request, res: Response) => {
       orderBy: {
         sparePartId: 'desc'
       },
-      take: 8
+      take: 10
     });
     res.json(sparePart);
   } catch (error) {
