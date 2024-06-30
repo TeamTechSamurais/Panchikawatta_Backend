@@ -1,11 +1,28 @@
 import express from 'express';
-import adminRoutes from './routes/adminRoutes';
-import sellerRoutes from './routes/sellerRoutes';
+import { PrismaClient } from '@prisma/client';
+// import adminRoutes from './routes/admin/adminRoutes'; // Make sure paths are correct
+// import sellerRoutes from './routes/admin/sellerRoutes'; // Make sure paths are correct
+// import vehicleRoutes from './routes/admin/vehicleRoutes'; // Import vehicleRoutes
+// import usersRoutes from './routes/admin/usersRoutes'; // Import usersRoutes
+// import servicesRoutes from './routes/admin/servicesRoutes';
 
+const prisma = new PrismaClient();
 const app = express();
 
+// Middleware to parse JSON bodies
 app.use(express.json());
-app.use('/api', adminRoutes);
-app.use('/api', sellerRoutes);
+
+// // Mount your routes
+// app.use('/api', adminRoutes);
+// app.use('/api', sellerRoutes);
+// app.use('/api', vehicleRoutes); // Mount vehicleRoutes under /api
+// app.use('/api', usersRoutes); // Mount usersRoutes under /api
+// app.use('api', servicesRoutes)
+
+const PORT = process.env.PORT || 8000;
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
 
 export default app;
