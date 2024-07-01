@@ -19,24 +19,36 @@ export const getSpareparts = async (req: Request, res: Response) => {
   }
 };
 
-export const searchVehicles = async (req: Request, res: Response) => {
+export const searchSpareParts = async (req: Request, res: Response) => {
   const { keyword } = req.query;
 
   try {
-    const vehicles = await prisma.vehicle.findMany({
+    const spareParts = await prisma.sparePart.findMany({
       where: {
         OR: [
+          {
+            title: {
+              contains: keyword as string,
+              mode: 'insensitive'
+            }
+          },
+          {
+            make: {
+              contains: keyword as string,
+              mode: 'insensitive'
+            }
+          },
           {
             model: {
               contains: keyword as string,
               mode: 'insensitive'
             }
-          },
+          }
           // Add other fields if necessary
         ]
       }
     });
-    res.json(vehicles);
+    res.json(spareParts);
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
