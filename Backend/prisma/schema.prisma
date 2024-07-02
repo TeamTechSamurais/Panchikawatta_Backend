@@ -140,4 +140,3 @@ model Admin {
   password      String
 
   @@map("admin")
-}
