@@ -6,6 +6,7 @@ import { get } from 'http';
 import { getUserDetailsByEmail } from './controllers/users/getUserDetailsByEmail';
 import { updateUserDetails } from './controllers/users/updateUserDetails';
 import { deleteUser } from './controllers/users/deleteUser';
+import { getSellerDetails } from './controllers/sellers/getSellerDetails';
 
 const prisma = new PrismaClient();
 
@@ -19,6 +20,8 @@ app.get('/spare-parts/:id', getSparePartById);
 app.get('/users/:email', getUserDetailsByEmail);
 app.put('/users/:email', updateUserDetails);
 app.put('/delete-users/:email', deleteUser);
+
+app.get('/sellers-by-id/:userID', getSellerDetails);
 
 
 const PORT = process.env.PORT || 8000;

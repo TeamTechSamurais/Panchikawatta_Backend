@@ -36,9 +36,3 @@ export async function getUserDetailsByEmail(req: Request, res: Response) {
         return res.status(500).json({ error: 'Internal server error' });;
     }
 }
-
-// Usage
-// getUserDetailsByEmail('user@example.com')
-//   .then(user => console.log(user))
-//   .catch(error => console.error(error))
-//   .finally(() => prisma.$disconnect());
