@@ -19,11 +19,11 @@ export const getSpareparts = async (req: Request, res: Response) => {
   }
 };
 
-export const searchVehicles = async (req: Request, res: Response) => {
+export const searchAds = async (req: Request, res: Response) => {
   const { keyword } = req.query;
 
   try {
-    const vehicles = await prisma.vehicle.findMany({
+    const spareParts = await prisma.sparePart.findMany({
       where: {
         OR: [
           {
@@ -36,8 +36,9 @@ export const searchVehicles = async (req: Request, res: Response) => {
         ]
       }
     });
-    res.json(vehicles);
+    res.json(spareParts);
   } catch (error) {
+    console.error('Error searching spare parts:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };

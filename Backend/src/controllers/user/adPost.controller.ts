@@ -1,43 +1,45 @@
-import { Request, Response } from 'express';
-import multer from 'multer';
-import { PrismaClient } from "@prisma/client";
+// import express, { Request, Response } from 'express';
+// import { PrismaClient } from '@prisma/client';
+// import bodyParser from 'body-parser';
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
+// const app = express();
+// app.use(bodyParser.json());
 
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+// interface PlaceOrderRequest extends Request {
+//   body: {
+//     userId: number;
+//     sparePartId: number;
+//     status: string;
+//   };
+// }
 
-export const createSparePart = async (req: Request, res: Response) => {
-  try {
+// app.post('/place-order', async (req: PlaceOrderRequest, res: Response) => {
+//   const { userId, sparePartId, status } = req.body;
 
-    const { title, description, price, make, model, origin, condition, fuel, year, sellerId, userId } = req.body;
+//   // Validate the input
+//   if (!userId || !sparePartId || !status) {
+//     return res.status(400).json({ error: 'All fields are required' });
+//   }
 
-    const images = req.files as Express.Multer.File[];
+//   try {
+//     const newOrder = await prisma.orderSparePart.create({
+//       data: {
+//         userId,
+//         sparePartId,
+//         status,
+//         dateTime: new Date(),
+//       },
+//     });
+//     res.status(201).json(newOrder);
+//   } catch (error) {
+//     res.status(500).json({ error: 'Something went wrong' });
+//   }
+// });
 
-    const image = images.length > 0 ? images[0].buffer : null;
+// const PORT = process.env.PORT || 3000;
+// app.listen(PORT, () => {
+//   console.log(`Server is running on port ${PORT}`);
+// });
 
-    const sparePart = await prisma.sparePart.create({
-      data: {
-        title,
-        description,
-        price: parseInt(price, 10),
-        make,
-        model,
-        origin,
-        condition,
-        fuel,
-        year: parseInt(year, 10),
-        sellerId: parseInt(sellerId, 10),
-        userId: parseInt(userId, 10),
-        image,
-      },
-    });
-
-    res.status(201).json(sparePart);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Failed to create spare part' });
-  }
-};
-
-export const uploadMiddleware = upload.array('images', 4);
+// //edit this to  use by using routes

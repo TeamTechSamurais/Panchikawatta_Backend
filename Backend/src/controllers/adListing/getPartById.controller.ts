@@ -9,7 +9,7 @@ export async function getSparePartById(req: Request, res: Response) {
     try {
         const sparePart = await prisma.sparePart.findUnique({
             where: {
-                sparePartId: parseInt(id)
+                sparePartId: Number(id)
             }
         });
 
@@ -17,7 +17,7 @@ export async function getSparePartById(req: Request, res: Response) {
             return res.status(404).json({ error: 'Spare part not found' });
         }
 
-        return res.status(200).json({ sparePart });
+        return res.json(sparePart);
     } catch (error) {
         console.error('Error fetching spare part by ID:', error);
         res.status(500).json({ error: 'Internal Server Error' });

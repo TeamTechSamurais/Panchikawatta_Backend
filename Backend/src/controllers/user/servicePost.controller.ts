@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export const createServiceAd = async (req: Request, res: Response) => {
-  const { userId, serviceName, description } = req.body;
+  const { userId, serviceName, description, price } = req.body;
 
   try {
     const newService = await prisma.service.create({
@@ -12,7 +12,8 @@ export const createServiceAd = async (req: Request, res: Response) => {
         sellerId: userId,
         title: serviceName,
         description: description,
-        userId: userId,
+        price: price,
+        userId: userId
       
         
       }
