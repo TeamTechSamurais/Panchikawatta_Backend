@@ -1,11 +1,11 @@
 import express from 'express';
 import { Express, Router } from 'express';
-import {configureAdminRoutes} from './admin/adminRoutes'
-import { configureSellersRoutes } from './admin/sellerRoutes';
-import { configureServicesRoutes } from './admin/servicesRoutes';
-import { configureSparePartsRoutes } from './admin/spareRoutes';
-import { configureUserRoutes } from './admin/usersRoutes';
-import { configureVehicleRoutes } from './admin/vehicleRoutes';
+import { configureAdminRoutes } from './spare_parts/adminRoutes';
+// import { configureSellersRoutes } from './admin/sellerRoutes';
+// import { configureServicesRoutes } from './admin/servicesRoutes';
+// import { configureSparePartsRoutes } from './admin/spareRoutes';
+// import { configureUserRoutes } from './admin/usersRoutes';
+// import { configureVehicleRoutes } from './admin/vehicleRoutes';
 
 
 // export function userRoutes(app: Express): void {
@@ -28,43 +28,9 @@ export function adminRoutes(app: Express): void {
   app.use(express.json());
   const admin = Router();
   configureAdminRoutes(admin);
-  app.use('/adminDetails', admin);
+  app.use('/admin', admin);
 }
 
-export function sellersRoutes(app: Express): void {
-    app.use(express.json());
-    const seller = Router();
-    configureSellersRoutes(seller);
-    app.use('/sellerDetails', seller);
-}
-
-export function serviceRoutes(app: Express): void {
-    app.use(express.json());
-    const service = Router();
-    configureServicesRoutes(service);
-    app.use('/servicesDetails', service);
-}
-
-export function sparePartsRoutes(app: Express): void {
-    app.use(express.json());
-    const spare = Router();
-    configureSparePartsRoutes(spare);
-    app.use('/spareDetails', spare);
-}
-
-export function userRoutes(app: Express): void {
-    app.use(express.json());
-    const user = Router();
-    configureUserRoutes(user);
-    app.use('/userDetails', user);
-}
-
-export function vehicleRoutes(app: Express): void {
-    app.use(express.json());
-    const vehicle = Router();
-    configureVehicleRoutes(vehicle);
-    app.use('/vehicleDetails', vehicle);
-}
 // export function loginRoutes(app: Express): void {
 //   app.use(express.json());
 //   const login = Router();

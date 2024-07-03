@@ -1,6 +1,6 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
-import { adminRoutes, sellersRoutes, serviceRoutes, sparePartsRoutes, userRoutes, vehicleRoutes } from './routes/routes';
+import { adminRoutes, /*sellersRoutes, serviceRoutes, sparePartsRoutes, userRoutes, vehicleRoutes*/ } from './routes/routes';
 
 const prisma = new PrismaClient();
 const app = express();
@@ -10,11 +10,11 @@ app.use(express.json());
 
 // Routes function
 adminRoutes(app);
-sellersRoutes(app);
-serviceRoutes(app);
-sparePartsRoutes(app);
-userRoutes(app);
-vehicleRoutes(app);
+// sellersRoutes(app);
+// serviceRoutes(app);
+// sparePartsRoutes(app);
+// userRoutes(app);
+// vehicleRoutes(app);
 
 
 

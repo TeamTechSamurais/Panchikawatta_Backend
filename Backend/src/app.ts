@@ -1,4 +1,5 @@
 import express from 'express';
+import bodyParser from 'body-parser';
 import { PrismaClient } from '@prisma/client';
 // import adminRoutes from './routes/admin/adminRoutes'; // Make sure paths are correct
 // import sellerRoutes from './routes/admin/sellerRoutes'; // Make sure paths are correct
@@ -18,11 +19,5 @@ app.use(express.json());
 // app.use('/api', vehicleRoutes); // Mount vehicleRoutes under /api
 // app.use('/api', usersRoutes); // Mount usersRoutes under /api
 // app.use('api', servicesRoutes)
-
-const PORT = process.env.PORT || 8000;
-
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
 
 export default app;
