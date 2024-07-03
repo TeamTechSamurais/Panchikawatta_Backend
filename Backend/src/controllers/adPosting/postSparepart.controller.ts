@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
 import multer from 'multer';
 
-const prisma = new PrismaClient();
+const prisma: PrismaClient & { image: any } = new PrismaClient() as PrismaClient & { image: any };
 
 // Configure multer for image upload
 const upload = multer({
@@ -30,12 +30,12 @@ export const postSparePart = (req: Request, res: Response) => {
         fuel,
         year
       } = req.body;
-      let image: Buffer | undefined = undefined;
+      let imageBuffer: Buffer | undefined = undefined;
 
       console.log('Request Body:', req.body);
 
       if (req.file) {
-        image = req.file.buffer;
+        imageBuffer = req.file.buffer;
       }
 
       if (
@@ -51,7 +51,6 @@ export const postSparePart = (req: Request, res: Response) => {
           sellerId: Number(sellerId),
           title,
           description,
-          image,
           price: Number(price),
           make,
           model,
@@ -62,6 +61,15 @@ export const postSparePart = (req: Request, res: Response) => {
         },
       });
 
+      if (imageBuffer) {
+        await prisma.image.create({
+          data: {
+            data: imageBuffer,
+            sparePartId: sparePart.sparePartId,
+          },
+        });
+      }
+
       res.status(201).json(sparePart);
     } catch (error) {
       console.error('Internal server error:', error);
@@ -69,3 +77,4 @@ export const postSparePart = (req: Request, res: Response) => {
     }
   });
 };
+

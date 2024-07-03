@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { PrismaClient } from '@prisma/client';
-import rootRouter from './routes';
+import rootRouter from './routes/1index';
 import { adListingRoutes, chatRoutes, adminRoutes, loginRoutes, userRoutes, addDataRoutes, adPosting } from './routes/routes';
 
 const app = express();
@@ -40,5 +40,6 @@ const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
 
 export default app;
