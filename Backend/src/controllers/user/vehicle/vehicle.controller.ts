@@ -36,7 +36,7 @@ const prisma = new PrismaClient();
 
 // Create a new vehicle with initial data
 export const createVehicle = async (req: Request, res: Response) => {
-  const { userId, type, make, model, year, licenceDate, insuranceDate } = req.body;
+  const { userId, type, make, model, year, licenceDate, insuranceDate,Image } = req.body;
   console.log('Request Body:', req.body);
   try {
     const vehicle = await prisma.vehicle.create({
@@ -51,6 +51,7 @@ export const createVehicle = async (req: Request, res: Response) => {
         milagePerWeek: 0,
         lastServiceDate: '',
         batteryCondition: '',
+        images : {create: Image}||''
       },
     });
 
@@ -69,8 +70,8 @@ export const updateVehicle = async (req: Request, res: Response) => {
   const updateData: any = {};
   if (milagePerWeek !== undefined) updateData.milagePerWeek = milagePerWeek;
   if (lastServiceDate !== undefined) updateData.lastServiceDate = lastServiceDate;
-  if (batteryCondition !== undefined) updateData.batteryCondition = batteryCondition;
-
+  
+  if (batteryCondition !== undefined && batteryCondition !== null) updateData.batteryCondition = batteryCondition;
   try {
     const vehicle = await prisma.vehicle.update({
       where: { vehicleId }, // Ensure vehicleId is a unique identifier
