@@ -5,7 +5,7 @@ import { hashSync } from 'bcrypt';
 const prisma = new PrismaClient();
 
 export const signup = async (req: Request, res: Response) => {
-  const { firstName, lastName, userName, password, email, phoneNo, province, district, vehicles, sellers, SparePart, Service } = req.body;
+  const { firstName, lastName, userName, password, email, phoneNo, province, district,image, vehicles, sellers, SparePart, Service,Image } = req.body;
   console.log('Request Body:', req.body);
   try {
     // Check if email already exists
@@ -26,10 +26,12 @@ export const signup = async (req: Request, res: Response) => {
         phoneNo,
         province,
         district,
+        
         vehicles: { create: vehicles },
         sellers: { create: sellers },
         spareParts: { create: SparePart },
-        services: { create: Service }
+        services: { create: Service },
+        images : {create: Image}||''
       },
     });
 

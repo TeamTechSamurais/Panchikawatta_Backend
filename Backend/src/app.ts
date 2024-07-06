@@ -14,10 +14,10 @@ admin.initializeApp({
 app.use(bodyParser.json()); // Middleware to parse JSON bodies
 
 // Use routes
-app.use('/users', userRoutes);
-app.get('/',(req:Request,res:Response)=>{
-    res.send('working')
-  })
+// app.use('/users', userRoutes);
+// app.get('/',(req:Request,res:Response)=>{
+//     res.send('working')
+//   })
 
 
 export default app;

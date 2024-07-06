@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import app from './app';
 import rootRouter from './routes';
 import cors from 'cors';
+import { userRoutes } from './routes/routes';
  
 //const app = express();
 
@@ -20,12 +21,14 @@ app.use(cors({
    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-app.use('/api',rootRouter);
+//app.use('/api',rootRouter);
  
 
 export const prismaClient = new PrismaClient({
   log:['query']
  }) 
+
+ userRoutes(app);
 const PORT = process.env.PORT || 8000;
  
 
