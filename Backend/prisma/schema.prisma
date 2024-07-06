@@ -1,0 +1,185 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 Int                     @id @default(autoincrement())
+  firstName          String
+  lastName           String
+  email              String                  @unique
+  password           String
+  createdAt          DateTime                @default(now())
+  deletedAt          DateTime?
+  district           String?
+  phoneNo            String
+  province           String?
+  userName           String
+  images             Image[]
+  orders             OrderSparePart[]
+  favoriteSpareParts UserFavoriteSparePart[]
+  sellers            Seller?
+  services           Service[]
+  spareParts         SparePart[]
+  vehicles           Vehicle[]
+}
+
+model Vehicle {
+  vehicleId        Int     @id @default(autoincrement())
+  userId           Int
+  model            String
+  year             Int
+  milagePerWeek    Int
+  licenceDate      String
+  insuranceDate    String
+  batteryCondition String
+  lastServiceDate  String
+  make             String
+  type             String
+  images           Image[]
+  user             User    @relation(fields: [userId], references: [id])
+
+  @@map("vehicle")
+}
+
+model Seller {
+  userId              Int    @id
+  businessAddress     String
+  businessDescription String
+  businessName        String
+  businessPhoneNo     String
+  user                User   @relation(fields: [userId], references: [id])
+
+  @@map("seller")
+}
+
+model ServiceStation {
+  sellerId  Int
+  name      String
+  address   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([sellerId, name])
+  @@map("serviceStation")
+}
+
+model Image {
+  id          Int        @id @default(autoincrement())
+  data        Bytes
+  userId      Int?
+  vehicleId   Int?
+  sparePartId Int?
+  serviceId   Int?
+  adminID     String?
+  admin       Admin?     @relation(fields: [adminID], references: [adminID])
+  service     Service?   @relation(fields: [serviceId], references: [serviceId])
+  sparePart   SparePart? @relation(fields: [sparePartId], references: [sparePartId])
+  user        User?      @relation(fields: [userId], references: [id])
+  vehicle     Vehicle?   @relation(fields: [vehicleId], references: [vehicleId])
+}
+
+model SparePart {
+  sparePartId     Int                     @id @default(autoincrement())
+  sellerId        Int
+  price           Int
+  model           String
+  origin          String
+  year            Int
+  description     String
+  condition       String
+  createdAt       DateTime                @default(now())
+  deletedAt       DateTime?
+  fuel            String
+  make            String
+  title           String
+  userId          Int?
+  clickCount      Int                     @default(0)
+  images          Image[]
+  orders          OrderSparePart[]
+  favoriteByUsers UserFavoriteSparePart[]
+  user            User?                   @relation(fields: [userId], references: [id])
+
+  @@map("sparePart")
+}
+
+model Service {
+  serviceId   Int       @id @default(autoincrement())
+  sellerId    Int
+  createdAt   DateTime  @default(now())
+  deletedAt   DateTime?
+  description String
+  title       String
+  userId      Int?
+  clickCount  Int       @default(0)
+  price       Int
+  images      Image[]
+  user        User?     @relation(fields: [userId], references: [id])
+
+  @@map("service")
+}
+
+model ServiceServiceStation {
+  sellerId  Int
+  serviceId Int
+  createdAt DateTime @default(now())
+
+  @@id([sellerId, serviceId])
+  @@map("serviceServiceStation")
+}
+
+model UserSparePart {
+  userId      Int
+  sparePartId Int
+  createdAt   DateTime @default(now())
+
+  @@id([userId, sparePartId])
+  @@map("userSparePart")
+}
+
+model UserService {
+  userId    Int
+  serviceId Int
+  createdAt DateTime @default(now())
+
+  @@id([userId, serviceId])
+  @@map("userService")
+}
+
+model UserFavoriteSparePart {
+  userId      Int
+  sparePartId Int
+  createdAt   DateTime  @default(now())
+  sparePart   SparePart @relation(fields: [sparePartId], references: [sparePartId])
+  user        User      @relation(fields: [userId], references: [id])
+
+  @@id([userId, sparePartId])
+}
+
+model OrderSparePart {
+  orderId     Int       @id @default(autoincrement())
+  sparePartId Int
+  userId      Int
+  dateTime    DateTime  @default(now())
+  status      String
+  adress      String
+  email       String
+  name        String
+  phoneNO     String
+  sparePart   SparePart @relation(fields: [sparePartId], references: [sparePartId])
+  user        User      @relation(fields: [userId], references: [id])
+}
+
+model Admin {
+  adminID       String  @id
+  email         String
+  adminUsername String
+  password      String
+  images        Image[]
+
+  @@map("admin")
+}
