@@ -13,10 +13,10 @@ model User {
   lastName           String
   email              String                  @unique
   password           String
-  phoneNo            String
   createdAt          DateTime                @default(now())
   deletedAt          DateTime?
   district           String?
+  phoneNo            String
   province           String?
   userName           String
   images             Image[]
@@ -166,6 +166,10 @@ model OrderSparePart {
   userId      Int
   dateTime    DateTime  @default(now())
   status      String
+  adress      String
+  email       String
+  name        String
+  phoneNO     String
   sparePart   SparePart @relation(fields: [sparePartId], references: [sparePartId])
   user        User      @relation(fields: [userId], references: [id])
 }

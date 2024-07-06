@@ -6,25 +6,24 @@ const prisma = new PrismaClient();
 
 const calculateNearestReminder = (vehicle: any) => {
   const now = moment();
-  const licenseDate = moment(vehicle.licenceDate, 'YYYY-MM-DD').add(1, 'year');
-  const insuranceDate = moment(vehicle.insuranceDate, 'YYYY-MM-DD').add(1, 'year');
-  const lastServiceDate = moment(vehicle.lastServiceDate, 'YYYY-MM-DD');
-  const serviceInterval = Math.ceil(vehicle.milagePerWeek * 52 / 10000); // assuming service every 10,000 miles
+  const licenseDate = moment(vehicle.licenceDate, 'DD/MM/YYYY').add(1, 'year');
+  const insuranceDate = moment(vehicle.insuranceDate, 'DD/MM/YYYY').add(1, 'year');
+  const lastServiceDate = moment(vehicle.lastServiceDate, 'DD/MM/YYYY');
+  const mileagePerMonth = vehicle.milagePerWeek * 4;
+  const monthsToNextService = Math.ceil(5000 / mileagePerMonth);
 
-  const nextServiceDate = lastServiceDate.add(serviceInterval, 'weeks');
+  const nextServiceDate = lastServiceDate.clone().add(monthsToNextService, 'months');
 
-  // Battery check intervals based on condition
   const batteryCheckIntervals: { [key: string]: number } = {
-    'excellent': 52, // once a year
-    'good': 26,      // every 6 months
-    'fair': 13,      // every 3 months
-    'average': 8,    // every 2 months
-    'low': 4         // every month
+    'excellent': 12,
+    'good': 6,
+    'fair': 3,
+    'average': 2,
+    'low': 1
   };
 
-  const batteryCheckInterval = batteryCheckIntervals[vehicle.batteryCondition.toLowerCase()] || 26; // default to 6 months
-  const lastBatteryCheckDate = moment(vehicle.lastServiceDate, 'YYYY-MM-DD');
-  const nextBatteryCheckDate = lastBatteryCheckDate.add(batteryCheckInterval, 'weeks');
+  const batteryCheckInterval = batteryCheckIntervals[vehicle.batteryCondition.toLowerCase()] || 6;
+  const nextBatteryCheckDate = lastServiceDate.clone().add(batteryCheckInterval, 'months');
 
   const reminders = [
     { type: 'License Renewal', date: licenseDate },
@@ -33,28 +32,40 @@ const calculateNearestReminder = (vehicle: any) => {
     { type: 'Battery Check', date: nextBatteryCheckDate }
   ];
 
-  const nearestReminder = reminders.reduce((nearest, reminder) => {
+  const futureReminders = reminders.filter(reminder => reminder.date.isAfter(now));
+
+  if (futureReminders.length === 0) {
+    return null;
+  }
+
+  const nearestReminder = futureReminders.reduce((nearest, reminder) => {
     return reminder.date.isBefore(nearest.date) ? reminder : nearest;
-  }, reminders[0]);
+  }, futureReminders[0]);
 
   return nearestReminder;
 };
 
-export const getVehicleReminders = async (req: Request, res: Response) => {
+export const getUserVehicleReminders = async (req: Request, res: Response) => {
   try {
-    const { vehicleId } = req.params;
-    const vehicle = await prisma.vehicle.findUnique({
-      where: { vehicleId: parseInt(vehicleId) },
+    const { userId } = req.params;
+    const vehicles = await prisma.vehicle.findMany({
+      where: { userId: parseInt(userId) },
     });
 
-    if (!vehicle) {
-      return res.status(404).json({ error: 'Vehicle not found' });
+    if (!vehicles || vehicles.length === 0) {
+      return res.status(404).json({ error: 'No vehicles found for this user' });
     }
 
-    const nearestReminder = calculateNearestReminder(vehicle);
-    const vehicleWithReminder = { ...vehicle, nearestReminder };
+    const vehiclesWithReminders = vehicles.map(vehicle => {
+      const nearestReminder = calculateNearestReminder(vehicle);
+      if (nearestReminder) {
+      const formattedDate = nearestReminder.date.format('DD/MM/YYYY');
+      return { ...vehicle, nearestReminder: { type: nearestReminder.type, date: formattedDate } };
+      }
+      return { ...vehicle, nearestReminder };
+    });
 
-    res.status(200).json(vehicleWithReminder);
+    res.status(200).json(vehiclesWithReminders);
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }

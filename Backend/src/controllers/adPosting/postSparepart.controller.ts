@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
 import multer from 'multer';
 
-const prisma: PrismaClient & { image: any } = new PrismaClient() as PrismaClient & { image: any };
+const prisma: PrismaClient & { image: any } = new PrismaClient();
 
 // Configure multer for image upload
 const upload = multer({
@@ -10,11 +10,12 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
 }).single('image');
 
-export const postSparePart = (req: Request, res: Response) => {
-  upload(req, res, async (err: any) => {
-    if (err) {
-      console.error('Image upload error:', err);
-      return res.status(400).send({ error: 'Image upload error' });
+export const postSparePart = async (req: Request, res: Response) => {
+  upload(req, res, async function (err) {
+    if (err instanceof multer.MulterError) {
+      return res.status(400).send({ error: err.message });
+    } else if (err) {
+      return res.status(500).send({ error: 'Internal server error' });
     }
 
     try {
@@ -77,4 +78,3 @@ export const postSparePart = (req: Request, res: Response) => {
     }
   });
 };
-
