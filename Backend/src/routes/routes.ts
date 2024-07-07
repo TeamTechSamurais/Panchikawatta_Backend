@@ -2,18 +2,20 @@ import express from 'express';
 import { Express, Router } from 'express';
 import { configureServiceRoutes } from './spare_parts/service.routes';
 import { configureSparePartsRoutes } from './spare_parts/spareparts.routes';
-import configureadListingRoutes from './spare_parts/adListing.routes';
 import { configureAdminRoutes } from './spare_parts/admin.routes';
 import { configureLoginRoutes } from './spare_parts/loging.routes';
 import { configureChatRoutes } from './spare_parts/chat.routes';
 import { configureAddDataRoutes } from './spare_parts/addData.routes';
 import { configureAdPostingRoutes } from './spare_parts/postSparepart.routes';
+import { configureVehicleRoutes } from './spare_parts/viewReminder.routes';
+import { configureadListingRoutes } from './spare_parts/adListing.routes';
 
 export function userRoutes(app: Express): void {
   app.use(express.json());
   const users = Router();
   configureServiceRoutes(users);
   configureSparePartsRoutes(users);
+  configureVehicleRoutes(users);
   app.use('/users', users);
 }
 

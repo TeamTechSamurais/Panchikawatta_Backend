@@ -11,7 +11,7 @@ export const getSpareparts = async (req: Request, res: Response) => {
       orderBy: {
         sparePartId: 'desc'
       },
-      take: 8
+      take: 10
     });
     res.json(sparePart);
   } catch (error) {
@@ -19,7 +19,7 @@ export const getSpareparts = async (req: Request, res: Response) => {
   }
 };
 
-export const searchAds = async (req: Request, res: Response) => {
+export const searchSpareParts = async (req: Request, res: Response) => {
   const { keyword } = req.query;
 
   try {
@@ -27,11 +27,23 @@ export const searchAds = async (req: Request, res: Response) => {
       where: {
         OR: [
           {
-            model: {
+            title: {
               contains: keyword as string,
               mode: 'insensitive'
             }
           },
+          {
+            make: {
+              contains: keyword as string,
+              mode: 'insensitive'
+            }
+          },
+          {
+            model: {
+              contains: keyword as string,
+              mode: 'insensitive'
+            }
+          }
           // Add other fields if necessary
         ]
       }
