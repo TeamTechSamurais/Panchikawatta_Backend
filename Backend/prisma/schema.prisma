@@ -19,7 +19,6 @@ model User {
   phoneNo            String
   province           String?
   userName           String
-  images             Image[]
   orders             OrderSparePart[]
   favoriteSpareParts UserFavoriteSparePart[]
   sellers            Seller?
@@ -29,7 +28,7 @@ model User {
 }
 
 model Vehicle {
-  vehicleId        Int     @id @default(autoincrement())
+  vehicleId        Int      @id @default(autoincrement())
   userId           Int
   model            String
   year             Int
@@ -40,8 +39,8 @@ model Vehicle {
   lastServiceDate  String
   make             String
   type             String
-  images           Image[]
-  user             User    @relation(fields: [userId], references: [id])
+  imageUrls        String[]
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("vehicle")
 }
@@ -68,21 +67,6 @@ model ServiceStation {
   @@map("serviceStation")
 }
 
-model Image {
-  id          Int        @id @default(autoincrement())
-  data        Bytes
-  userId      Int?
-  vehicleId   Int?
-  sparePartId Int?
-  serviceId   Int?
-  adminID     String?
-  admin       Admin?     @relation(fields: [adminID], references: [adminID])
-  service     Service?   @relation(fields: [serviceId], references: [serviceId])
-  sparePart   SparePart? @relation(fields: [sparePartId], references: [sparePartId])
-  user        User?      @relation(fields: [userId], references: [id])
-  vehicle     Vehicle?   @relation(fields: [vehicleId], references: [vehicleId])
-}
-
 model SparePart {
   sparePartId     Int                     @id @default(autoincrement())
   sellerId        Int
@@ -99,10 +83,11 @@ model SparePart {
   title           String
   userId          Int?
   clickCount      Int                     @default(0)
-  images          Image[]
+  imageUrls       String[]
+  type            String
   orders          OrderSparePart[]
   favoriteByUsers UserFavoriteSparePart[]
-  user            User?                   @relation(fields: [userId], references: [id])
+  user            User?                   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("sparePart")
 }
@@ -117,8 +102,9 @@ model Service {
   userId      Int?
   clickCount  Int       @default(0)
   price       Int
-  images      Image[]
-  user        User?     @relation(fields: [userId], references: [id])
+  imageUrls   String[]
+  type        String?
+  user        User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("service")
 }
@@ -154,7 +140,7 @@ model UserFavoriteSparePart {
   userId      Int
   sparePartId Int
   createdAt   DateTime  @default(now())
-  sparePart   SparePart @relation(fields: [sparePartId], references: [sparePartId])
+  sparePart   SparePart @relation(fields: [sparePartId], references: [sparePartId], onDelete: Cascade)
   user        User      @relation(fields: [userId], references: [id])
 
   @@id([userId, sparePartId])
@@ -166,20 +152,19 @@ model OrderSparePart {
   userId      Int
   dateTime    DateTime  @default(now())
   status      String
-  adress      String
   email       String
   name        String
   phoneNO     String
+  address     String
   sparePart   SparePart @relation(fields: [sparePartId], references: [sparePartId])
   user        User      @relation(fields: [userId], references: [id])
 }
 
 model Admin {
-  adminID       String  @id
+  adminID       String @id
   email         String
   adminUsername String
   password      String
-  images        Image[]
 
   @@map("admin")
 }
