@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { PrismaClient } from '@prisma/client';
 import rootRouter from './routes/1index';
-import { adListingRoutes, chatRoutes, adminRoutes, loginRoutes, userRoutes, addDataRoutes, adPosting } from './routes/routes';
+import { adListingRoutes, chatRoutes, adminRoutes, loginRoutes, userRoutes, addDataRoutes, adPosting, profileRoutes } from './routes/routes';
 
 const app = express();
 const allowedOrigins = ['http://10.0.2.2:8000', 'http://127.0.0.1:8000'];
@@ -30,16 +30,8 @@ adminRoutes(app);
 loginRoutes(app);
 addDataRoutes(app);
 adPosting(app);
+profileRoutes(app);
 
 export const prismaClient = new PrismaClient({
   log: ['query']
 });
-
-const PORT = process.env.PORT || 8000;
-
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
-
-
-export default app;

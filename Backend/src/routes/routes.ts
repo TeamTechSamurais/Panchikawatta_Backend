@@ -1,6 +1,6 @@
 import express from 'express';
 import { Express, Router } from 'express';
-import { configureServiceRoutes } from './spare_parts/service.routes';
+import { configureProfileRoutes } from './spare_parts/profile.routes';import { configureServiceRoutes } from './spare_parts/service.routes';
 import { configureSparePartsRoutes } from './spare_parts/spareparts.routes';
 import { configureadListingRoutes } from './spare_parts/adListing.routes';
 import { configureAdminRoutes } from './spare_parts/admin.routes';
@@ -62,4 +62,12 @@ export function addDataRoutes(app: Express): void {
   const addData = Router();
   configureAddDataRoutes(addData);
   app.use('/addData', addData);
+}
+
+
+export function profileRoutes(app:Express): void{
+    app.use(express.json());
+    const profile = Router();
+    configureProfileRoutes(profile);
+    app.use('/profile', profile);
 }
