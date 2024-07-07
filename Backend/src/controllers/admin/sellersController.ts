@@ -33,3 +33,29 @@ export const getSellersProvinces = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
+
+
+export const getSellerDetailsByUserId = async (req: Request, res: Response) => {
+  const userId = parseInt(req.params.userId, 10);
+
+  if (isNaN(userId)) {
+    return res.status(400).json({ error: 'Invalid userId' });
+  }
+
+  try {
+    const seller = await prisma.seller.findUnique({
+      where: { userId },
+      include: { user: true }, // Adjust if you want to include related user data
+    });
+
+    if (!seller) {
+      return res.status(404).json({ error: 'Seller not found' });
+    }
+
+    res.json({ seller });
+  } catch (error) {
+    console.error('Error fetching seller details:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};

@@ -22,6 +22,27 @@ export async function getAllServices(req: Request, res: Response): Promise<void>
   }
 }
 
+// Function to get all services with seller details by sellerId
+export async function getAllServicesdetails(req: Request, res: Response): Promise<void> {
+  const { sellerId } = req.params; // Assuming you pass sellerId as a parameter
+  
+  try {
+    const services = await prisma.service.findMany({
+      where: {
+        sellerId: parseInt(sellerId), // Convert to integer if necessary
+      },
+      include: {
+        user: true, // Include the user relation to fetch user details
+        
+      },
+    });
+    res.status(200).json(services);
+  } catch (error) {
+    console.error('Error fetching services:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
 // Route to get seller details by userId
 app.get('/seller/:userId', async (req: Request, res: Response) => {
   const userId = parseInt(req.params.userId);

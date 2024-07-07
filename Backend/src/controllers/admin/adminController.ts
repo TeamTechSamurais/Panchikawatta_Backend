@@ -4,7 +4,11 @@ import prisma from "../../prismaClient";
 export const getAdminData = async (req: Request, res: Response) => {
   try {
     const admin = await prisma.admin.findUnique({
-      where: { adminID: "2" }, // Example, adjust based on your schema
+      where: { adminID: "1" }, // Example, adjust based on your schema
+      select: {
+        adminUsername: true,
+        email: true,
+      },
     });
     
     const sellersCount = await prisma.seller.count();
