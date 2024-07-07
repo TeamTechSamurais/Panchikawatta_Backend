@@ -2,13 +2,13 @@ import { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
 import multer from 'multer';
 
-const prisma: PrismaClient & { image: any } = new PrismaClient();
+const prisma = new PrismaClient();
 
 // Configure multer for image upload
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
-}).single('image');
+}).array('images', 10); // Allow up to 10 images
 
 export const postSparePart = async (req: Request, res: Response) => {
   upload(req, res, async function (err) {
@@ -31,13 +31,6 @@ export const postSparePart = async (req: Request, res: Response) => {
         fuel,
         year
       } = req.body;
-      let imageBuffer: Buffer | undefined = undefined;
-
-      console.log('Request Body:', req.body);
-
-      if (req.file) {
-        imageBuffer = req.file.buffer;
-      }
 
       if (
         !sellerId || !title || !description || !price ||
@@ -46,30 +39,41 @@ export const postSparePart = async (req: Request, res: Response) => {
         return res.status(400).send({ error: 'Missing required fields' });
       }
 
+      // Convert price and year to numbers
+      const parsedPrice = parseFloat(price);
+      const parsedYear = parseInt(year, 10);
+
+      // Ensure valid number conversion
+      if (isNaN(parsedPrice) || isNaN(parsedYear)) {
+        return res.status(400).send({ error: 'Invalid price or year format' });
+      }
+
+      // Process uploaded images
+      const imageUrls: string[] = [];
+      if (Array.isArray(req.files) && req.files.length > 0) {
+        for (const file of req.files as Express.Multer.File[]) {
+          // Simulate saving the image to some storage and getting a URL
+          const imageUrl = `path/to/your/storage/${file.originalname}`;
+          imageUrls.push(imageUrl);
+        }
+      }
+
       const sparePart = await prisma.sparePart.create({
         data: {
-          userId: Number(sellerId),
           sellerId: Number(sellerId),
           title,
           description,
-          price: Number(price),
+          price: parsedPrice,
+          type: '',
           make,
           model,
           origin,
           condition,
           fuel,
-          year: Number(year),
+          year: parsedYear,
+          imageUrls,
         },
       });
-
-      if (imageBuffer) {
-        await prisma.image.create({
-          data: {
-            data: imageBuffer,
-            sparePartId: sparePart.sparePartId,
-          },
-        });
-      }
 
       res.status(201).json(sparePart);
     } catch (error) {

@@ -4,14 +4,30 @@ import { hashSync } from 'bcrypt';
 
 const prisma = new PrismaClient();
 
+// Signup function to create a new user
 export const signup = async (req: Request, res: Response) => {
-  const { firstName, lastName, userName, password, email, phoneNo, province, district,image, vehicles, sellers, SparePart, Service,Image } = req.body;
+  const {
+    firstName,
+    lastName,
+    userName,
+    password,
+    email,
+    phoneNo,
+    province,
+    district,
+    vehicles,
+    sellers,
+    spareParts,
+    services,
+    images
+  } = req.body;
   console.log('Request Body:', req.body);
+
   try {
     // Check if email already exists
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
-      return res.status(409).json({ error: 'The email addreess is already in use' });
+      return res.status(409).json({ error: 'The email address is already in use' });
     }
 
     // Create new user
@@ -26,23 +42,23 @@ export const signup = async (req: Request, res: Response) => {
         phoneNo,
         province,
         district,
-        
-        vehicles: { create: vehicles },
-        sellers: { create: sellers },
-        spareParts: { create: SparePart },
-        services: { create: Service },
-        images : {create: Image}||''
+        vehicles: { create: vehicles || [] },
+        sellers: { create: sellers || [] },
+        spareParts: { create: spareParts || [] },
+        services: { create: services || [] },
+        //imageURLs: { create: images || [] }
       },
     });
 
     // Respond with user data
-    
     res.status(200).json({ userId: user.id });
   } catch (error) {
     console.error('Error creating user:', error);
     res.status(500).json({ error: 'Failed to create user' });
   }
 };
+
+// Delete user function
 export const deleteUser = async (req: Request, res: Response) => {
   const { id } = req.params;
 

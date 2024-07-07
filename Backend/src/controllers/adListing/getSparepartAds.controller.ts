@@ -3,18 +3,13 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-// Helper function to convert image bytes to Base64
-const convertImagesToBase64 = (spareParts: any) => {
+// Helper function to format spare parts data
+const formatSparePartsData = (spareParts: any) => {
   return spareParts.map((sparePart: any) => {
-    if (sparePart.images && sparePart.images.length > 0) {
-      sparePart.images = sparePart.images.map((image: any) => {
-        return {
-          ...image,
-          data: image.data.toString('base64')
-        };
-      });
-    }
-    return sparePart;
+    return {
+      ...sparePart,
+      images: sparePart.imageUrls, // Use the imageUrls field
+    };
   });
 };
 
@@ -27,13 +22,13 @@ export const getSpareparts = async (req: Request, res: Response) => {
       },
       take: 10,
       include: {
-        images: true, // Include images relation
+        user: true, // Include user relation if needed
       },
     });
 
-    const sparePartsWithBase64Images = convertImagesToBase64(spareParts);
+    const formattedSpareParts = formatSparePartsData(spareParts);
 
-    res.json(sparePartsWithBase64Images);
+    res.json(formattedSpareParts);
   } catch (error) {
     console.error('Error fetching spare parts:', error);
     res.status(500).json({ error: 'Internal server error' });
@@ -80,13 +75,13 @@ export const searchSpareParts = async (req: Request, res: Response) => {
         ]
       },
       include: {
-        images: true, // Include images relation
+        user: true, // Include user relation if needed
       },
     });
 
-    const sparePartsWithBase64Images = convertImagesToBase64(spareParts);
+    const formattedSpareParts = formatSparePartsData(spareParts);
 
-    res.json(sparePartsWithBase64Images);
+    res.json(formattedSpareParts);
   } catch (error) {
     console.error('Error searching spare parts:', error);
     res.status(500).json({ error: 'Internal server error' });
