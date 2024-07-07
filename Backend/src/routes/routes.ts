@@ -2,7 +2,7 @@ import express from 'express';
 import { Express, Router } from 'express';
 import { configureServiceRoutes } from './spare_parts/service.routes';
 import { configureSparePartsRoutes } from './spare_parts/spareparts.routes';
-import { configureadListingRoutes } from './spare_parts/adListing.routes';
+import configureadListingRoutes from './spare_parts/adListing.routes';
 import { configureAdminRoutes } from './spare_parts/admin.routes';
 import { configureLoginRoutes } from './spare_parts/loging.routes';
 import { configureChatRoutes } from './spare_parts/chat.routes';
@@ -21,7 +21,7 @@ export function adListingRoutes(app: Express): void {
   app.use(express.json());
   const adListing = Router();
   configureadListingRoutes(adListing);
-  app.use('/adListing', adListing);
+  app.use('/adlisting', adListing);
 }
 
 export function adminRoutes(app: Express): void {
