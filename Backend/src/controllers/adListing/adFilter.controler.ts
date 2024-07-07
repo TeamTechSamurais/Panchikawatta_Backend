@@ -25,7 +25,6 @@ export async function getFilteredAds(req: Request, res: Response) {
         AND: [
           province ? { user: { province: String(province) } } : {},
           district ? { user: { district: String(district) } } : {},
-          // vehicleType ? { type: String(vehicleType) } : {},
           vehicleMake ? { make: String(vehicleMake) } : {},
           model ? { model: String(model) } : {},
           origin ? { origin: String(origin) } : {},
@@ -38,12 +37,17 @@ export async function getFilteredAds(req: Request, res: Response) {
         ],
       },
       include: {
-        images: true,
         user: true,
       },
     });
 
-    res.json(ads);
+    // Attach the imageUrls if they are present
+    const adsWithImages = ads.map(ad => ({
+      ...ad,
+      images: ad.imageUrls.length > 0 ? ad.imageUrls : [],
+    }));
+
+    res.json(adsWithImages);
   } catch (error) {
     console.error('Failed to fetch filtered ads:', error);
     res.status(500).send({ error: 'Failed to fetch filtered ads' });
