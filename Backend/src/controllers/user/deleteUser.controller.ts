@@ -32,6 +32,36 @@ export async function deleteUser(req: Request, res: Response) {
                 },
                 data: {
                     deletedAt: new Date(),
+                    services: {
+                        updateMany: {
+                            where: {
+                                userId: user.id,
+                            },
+                            data: {
+                                deletedAt: new Date(),
+                            },
+                        },
+                    },
+                    spareParts: {
+                        updateMany: {
+                            where: {
+                                userId: user.id,
+                            },
+                            data: {
+                                deletedAt: new Date(),
+                            },
+                        },
+                    },
+                    // vehicles: {
+                    //     updateMany: {
+                    //         where: {
+                    //             userId: user.id,
+                    //         },
+                    //         data: {
+                    //             deletedAt: new Date(),
+                    //         },
+                    //     },
+                    // },
                 },
             });
         } 

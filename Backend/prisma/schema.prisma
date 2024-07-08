@@ -19,6 +19,7 @@ model User {
   phoneNo            String
   province           String?
   userName           String
+  imageUrls          String[]
   orders             OrderSparePart[]
   favoriteSpareParts UserFavoriteSparePart[]
   sellers            Seller?
@@ -28,7 +29,7 @@ model User {
 }
 
 model Vehicle {
-  vehicleId        Int      @id @default(autoincrement())
+  vehicleId        Int       @id @default(autoincrement())
   userId           Int
   model            String
   year             Int
@@ -40,7 +41,9 @@ model Vehicle {
   make             String
   type             String
   imageUrls        String[]
-  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt        DateTime?
+  deletedAt        DateTime?
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("vehicle")
 }
@@ -167,4 +170,13 @@ model Admin {
   password      String
 
   @@map("admin")
+}
+
+model testModel {
+  id        Int      @id @default(autoincrement())
+  photo1    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("testModel")
 }
