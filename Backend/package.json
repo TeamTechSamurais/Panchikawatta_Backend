@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "migration:create": "prisma migrate dev --create-only",
     "migrate": "prisma migrate dev",
     "migrate:prod": "prisma migrate deploy",
     "start": "ts-node src/index.ts",

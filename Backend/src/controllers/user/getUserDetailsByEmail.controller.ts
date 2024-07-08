@@ -26,8 +26,10 @@ export async function getUserDetailsByEmail(req: Request, res: Response) {
         });
 
         if (!user || user.deletedAt !== null) {
+            console.log('User not found');
             return res.status(404).json({ error: 'User not found' });
         } else {
+            console.log('User found:', user);
             return res.json(user);
         }
         

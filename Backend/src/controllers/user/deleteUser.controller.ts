@@ -22,8 +22,11 @@ export async function deleteUser(req: Request, res: Response) {
         });
 
         if (!user) {
+            console.log('User not found');
             return res.status(404).json({ error: 'User not found' });
         }
+
+        console.log('User found:', user);
 
         if (user.deletedAt == null) {
             await prisma.user.update({
@@ -52,16 +55,16 @@ export async function deleteUser(req: Request, res: Response) {
                             },
                         },
                     },
-                    // vehicles: {
-                    //     updateMany: {
-                    //         where: {
-                    //             userId: user.id,
-                    //         },
-                    //         data: {
-                    //             deletedAt: new Date(),
-                    //         },
-                    //     },
-                    // },
+                    vehicles: {
+                        updateMany: {
+                            where: {
+                                userId: user.id,
+                            },
+                            data: {
+                                deletedAt: new Date(),
+                            },
+                        },
+                    },
                 },
             });
         } 
