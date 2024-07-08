@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
 import multer from 'multer';
 
+
 const prisma = new PrismaClient();
 
 // Configure multer for image upload
