@@ -3,10 +3,12 @@ import { getUserDetailsByEmail } from "../../controllers/user/getUserDetailsByEm
 import { updateUserDetails } from "../../controllers/user/updateUserDetails.controller";
 import { deleteUser } from "../../controllers/user/deleteUser.controller";
 import { getSellerDetails } from "../../controllers/seller/getSellerDetails.controller";
+import { getUserDetailsById } from "../../controllers/user/getUserDetailsById";
 
 export function configureProfileRoutes(router: Router) {
-    router.get('/users/:email', getUserDetailsByEmail);
-    router.put('/users/:email', updateUserDetails);
-    router.put('/delete-users/:email', deleteUser);
-    router.get('/sellers-by-id/:userID', getSellerDetails);
+    router.get('/users/:email', getUserDetailsByEmail); // Get user details by email
+    router.get('/user-by-id/:id', getUserDetailsById); // Get user details by ID
+    router.put('/users/:email', updateUserDetails); // Update user details
+    router.put('/delete-users/:email', deleteUser); // Delete user
+    router.get('/sellers-by-id/:userID', getSellerDetails); // Get seller details by user ID
 }
