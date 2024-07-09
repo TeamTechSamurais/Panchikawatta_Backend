@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 // Create a new vehicle with initial data
 export const createVehicle = async (req: Request, res: Response) => {
-  const { userId, type, make, model, year, licenceDate, insuranceDate, images } = req.body;
+  const { userId, type, make, model, year, licenceDate, insuranceDate, imageUrls } = req.body;
   console.log('Request Body:', req.body);
 
   try {
@@ -21,7 +21,8 @@ export const createVehicle = async (req: Request, res: Response) => {
         milagePerWeek: 0,
         lastServiceDate: '',
         batteryCondition: '',
-        imageUrls: images || [],
+        imageUrls:[imageUrls]
+       //imageUrls: [imageUrls ]&& Array.isArray(imageUrls) ? imageUrls : [],
       },
     });
 
