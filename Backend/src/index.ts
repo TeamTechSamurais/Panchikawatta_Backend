@@ -1,19 +1,38 @@
 import express from 'express';
+import cors from 'cors';
 import { PrismaClient } from '@prisma/client';
-import { getAllSpareParts } from './controllers/spare_parts/showAllParts.controllers';
-import { getSparePartById } from './controllers/spare_parts/getPartById.controller';
-const prisma = new PrismaClient();
-
-const app = express();
-
-app.get('/all-spare-parts', getAllSpareParts);
-app.get('/spare-parts/:id', getSparePartById);
+import rootRouter from './routes/1index';
+import { adListingRoutes, chatRoutes, adminRoutes, loginRoutes, userRoutes, addDataRoutes, adPosting, profileRoutes } from './routes/routes';
+import app from './app';
 
 
-const PORT = process.env.PORT || 8000;
+const allowedOrigins = ['http://10.0.2.2:8000', 'http://127.0.0.1:8000'];
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.use(cors({
+  origin: function(origin, callback) {
+    // Check if the origin is allowed
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+app.use(express.json());
+app.use('/api', rootRouter);
+
+userRoutes(app);
+adListingRoutes(app);
+chatRoutes(app);
+adminRoutes(app);
+loginRoutes(app);
+addDataRoutes(app);
+adPosting(app);
+profileRoutes(app);
+
+export const prismaClient = new PrismaClient({
+  log: ['query']
 });
-
-export default app;
