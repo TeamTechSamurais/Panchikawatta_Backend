@@ -30,6 +30,9 @@ export const signup = async (req: Request, res: Response) => {
       return res.status(409).json({ error: 'The email address is already in use' });
     }
 
+    // Ensure imageUrls is an array
+    const imageUrlArray = imageUrls ? [imageUrls] : [];
+
     // Create new user
     const hashedPassword = hashSync(password, 10);
     const user = await prisma.user.create({
@@ -42,25 +45,11 @@ export const signup = async (req: Request, res: Response) => {
         phoneNo,
         province,
         district,
-        vehicles: { 
-          create: vehicles.map((vehicle: any) => ({
-            ...vehicle,
-            imageUrls: Array.isArray(vehicle.imageUrls) ? vehicle.imageUrls : []
-          }))
-        },
+        vehicles: { create: vehicles },
         sellers: { create: sellers },
-        spareParts: { 
-          create: SparePart.map((part: any) => ({
-            ...part,
-            imageUrls: Array.isArray(part.imageUrls) ? part.imageUrls : []
-          }))
-        },
-        services: { 
-          create: Service.map((service: any) => ({
-            ...service,
-            imageUrls: Array.isArray(service.imageUrls) ? service.imageUrls : []
-          }))
-        }
+        spareParts: { create: SparePart },
+        services: { create: Service },
+        imageUrls: imageUrlArray
       },
     });
 

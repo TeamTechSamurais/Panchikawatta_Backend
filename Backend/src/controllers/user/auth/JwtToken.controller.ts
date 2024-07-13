@@ -15,7 +15,7 @@ export const generateJwtToken = async (req: Request, res: Response) => {
     const userId = decodedToken.uid;
 
     
-    const expiresIn = '5m';
+    const expiresIn = '35m';
      
 
     // Generate JWT token

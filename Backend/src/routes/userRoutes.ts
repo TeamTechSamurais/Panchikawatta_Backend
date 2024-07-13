@@ -4,6 +4,7 @@ import { createVehicle, updateVehicle } from '../controllers/user/vehicle/vehicl
 import { createBusiness } from '../controllers/user/business/business.controller';
 import { deleteUser, signup } from '../controllers/user/auth/signup.controller'
 import { checkTokenExpiration, generateJwtToken} from '../controllers/user/auth/JwtToken.controller';
+import { getUserIdByEmail } from '../controllers/user/getIdByEmail.controller';
 
 const router = Router();
 export function configureUserRoutes(router:Router){
@@ -17,6 +18,7 @@ router.post('/b',createBusiness );
 router.post('/generateJwtToken',generateJwtToken);
 router.post('/',signup );
 // router.post('/signup',signup)
+router.get('/getidbyemail/:email', getUserIdByEmail);
  
 
 // Route to check token expiration
