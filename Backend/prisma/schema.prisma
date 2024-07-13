@@ -20,7 +20,7 @@ model User {
   province           String?
   userName           String
   imageUrls          String[]
-  orders             OrderSparePart[]
+  OrderSparePart             OrderSparePart[]
   favoriteSpareParts UserFavoriteSparePart[]
   sellers            Seller?
   services           Service[]
@@ -40,7 +40,7 @@ model Vehicle {
   lastServiceDate  String
   make             String
   type             String
-  imageUrls        String[]
+  imageUrls        String?
   createdAt        DateTime?
   deletedAt        DateTime?
   user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -161,6 +161,8 @@ model OrderSparePart {
   address     String
   sparePart   SparePart @relation(fields: [sparePartId], references: [sparePartId])
   user        User      @relation(fields: [userId], references: [id])
+
+  @@map("OrderSparePart")
 }
 
 model Admin {
@@ -168,6 +170,7 @@ model Admin {
   email         String
   adminUsername String
   password      String
+  imageUrls     String?
 
   @@map("admin")
 }

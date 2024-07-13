@@ -3,20 +3,25 @@ import { Router } from 'express';
 import { getFilteredAds } from '../../controllers/adListing/adFilter.controler';
 import { getSpareparts, searchSpareParts } from '../../controllers/adListing/getSparepartAds.controller';
 import { getServices, searchServices } from '../../controllers/adListing/getServiceAds.controller';
-import { addFavorite, getFavorites } from '../../controllers/adListing/userFavoriteSparePart.controller';
 
-import { cancelOrder, confirmOrder, createOrder } from '../../controllers/adListing/orderManagment.controller';
+import { finalizeOrder, placeOrder } from '../../controllers/adListing/orderManagment.controller';
+import { addToFavorites, getFavoritesByUser } from '../../controllers/adListing/userFavoriteSparePart.controller';
+import { getOrdersBySeller, updateOrderStatus } from '../../controllers/adListing/orders.Controller';
 
 export function configureadListingRoutes(router: Router) {
     router.get('/search', searchSpareParts);
     router.get('/getSpareparts', getSpareparts);
-    router.get('/getFilteredAds',getFilteredAds);
+    router.get('/getFilteredAds', getFilteredAds);
     router.get('/getServices', getServices);
     router.get('/searchServices', searchServices);
-    router.get('/favorites',getFavorites)
-    router.post('/addfavorite', addFavorite)
+   
 
-    router.post('/buy',createOrder)
-    router.put('/confirmOrder',confirmOrder)
-    router.delete('/deleteorder',cancelOrder)
+    router.post('/placeOrder', placeOrder);
+    router.post('/finalizeOrder', finalizeOrder);
+    
+    router.get('/orders/seller/:sellerId', getOrdersBySeller);
+    router.put('/orders/:orderId/status', updateOrderStatus);
+
+    router.post('/add-to-favorites', addToFavorites);
+    router.get('/favorites/:userId', getFavoritesByUser);
 }
