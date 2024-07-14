@@ -6,7 +6,7 @@ import rootRouter from './routes/1index';
 import { JWT_SECRET } from './config/config';
 import admin from 'firebase-admin';
 import jwt from 'jsonwebtoken'; // Import the 'jsonwebtoken' library
-import serviceAccount from 'C:/Project_Backend/Panchikawatta_Backend/panchikawatta-d9e2e-firebase-adminsdk-42fm8-d6a3dbf461.json';
+import serviceAccount from 'C:/Users/Pahancode/Desktop/final_backend/Panchikawatta_Backend/panchikawatta-d9e2e-firebase-adminsdk-42fm8-d6a3dbf461.json';
 
 admin.initializeApp({
   credential: admin.credential.applicationDefault(),
