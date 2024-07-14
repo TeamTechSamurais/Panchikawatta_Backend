@@ -5,7 +5,6 @@ import rootRouter from './routes/1index';
 import { adListingRoutes, chatRoutes, adminRoutes, loginRoutes, userRoutes, addDataRoutes, adPosting, profileRoutes } from './routes/routes';
 import app from './app';
 
-
 const allowedOrigins = ['http://10.0.2.2:8000', 'http://127.0.0.1:8000'];
 
 app.use(cors({

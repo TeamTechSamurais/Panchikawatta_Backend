@@ -1,11 +1,9 @@
 import admin from 'firebase-admin';
-
-import serviceAccount from 'C:/Users/USER/Desktop/fltr/Panchikawatta_Backend/panchikawatta-d9e2e-firebase-adminsdk-42fm8-d6a3dbf461.json';
-// Path to your Firebase service account key JSON file
+import * as serviceAccount from '../../panchikawatta-d9e2e-firebase-adminsdk-42fm8-e29b1feb43.json';
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+  credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
   projectId: serviceAccount.project_id,
 });
 
-module.exports = admin;
+export { admin };
