@@ -1,59 +1,47 @@
 import { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
-import multer from 'multer';
 
-const prisma: PrismaClient & { images: any } = new PrismaClient() as PrismaClient & { images: any };
+const prisma = new PrismaClient();
 
-// Configure multer for image upload
-const upload = multer({
-  storage: multer.memoryStorage(),
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
-}).single('image');
+export const postService = async (req: Request, res: Response) => {
+  try {
+    const {
+      sellerId,
+      title,
+      description,
+      price,
+      imageUrls, // Added field to fetch image URLs
+      type,      // Added type field
+    } = req.body;
 
-// Step 1: Add title, description, image, and price
-export const postService = (req: Request, res: Response) => {
-  upload(req, res, async (err: any) => {
-    if (err) {
-      return res.status(400).send({ error: 'Image upload error' });
+    // Validate the presence of all required fields
+    if (!sellerId || !title || !description || !price) {
+      return res.status(400).send({ error: 'Missing required fields' });
     }
 
-    try {
-      const { sellerId, title, description, price } = req.body;
-      let imageBuffer: Buffer | undefined = undefined;
-
-      if (req.file) {
-        imageBuffer = req.file.buffer;
-      }
-
-      if (!sellerId || !title || !description || !price) {
-        return res.status(400).send({ error: 'Missing required fields' });
-      }
-
-      // Create the service record first
-      const service = await prisma.service.create({
-        data: {
-          userId: Number(sellerId),
-          sellerId: Number(sellerId),
-          title,
-          description,
-          price: Number(price)
-        },
-      });
-
-      // If an image is uploaded, create the image record
-      if (imageBuffer) {
-        await prisma.images.create({
-          data: {
-            data: imageBuffer,
-            serviceId: service.serviceId,
-          },
-        });
-      }
-
-      res.status(201).json(service);
-    } catch (error) {
-      console.error('Internal server error:', error);
-      res.status(500).send({ error: 'Internal server error' });
+    // Convert price to a number
+    const parsedPrice = parseInt(price, 10);
+    if (isNaN(parsedPrice)) {
+      return res.status(400).send({ error: 'Invalid price format' });
     }
-  });
+
+    // Ensure imageUrls is an array if provided
+    const parsedImageUrls = Array.isArray(imageUrls) ? imageUrls : [];
+
+    const service = await prisma.service.create({
+      data: {
+        sellerId: Number(sellerId),
+        title,
+        description,
+        price: parsedPrice,
+        imageUrls: parsedImageUrls, // Store the image URLs
+        type: type || '', // Use type if provided, else an empty string
+      },
+    });
+
+    res.status(201).json(service);
+  } catch (error) {
+    console.error('Internal server error:', error);
+    res.status(500).send({ error: 'Internal server error' });
+  }
 };

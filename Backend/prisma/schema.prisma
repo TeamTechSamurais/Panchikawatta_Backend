@@ -20,7 +20,7 @@ model User {
   province           String?
   userName           String
   imageUrls          String[]
-  OrderSparePart             OrderSparePart[]
+  OrderSparePart     OrderSparePart[]
   favoriteSpareParts UserFavoriteSparePart[]
   sellers            Seller?
   services           Service[]

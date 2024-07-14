@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export async function getSparePartById(req: Request, res: Response) {
+export const getSparePartById = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
@@ -15,10 +15,7 @@ export async function getSparePartById(req: Request, res: Response) {
       return res.status(404).send({ error: 'Spare part not found' });
     }
 
-    // If there are images, include them in the response
-    const images = sparePart.imageUrls.length > 0 ? sparePart.imageUrls : null;
-
-    res.json({ ...sparePart, images });
+    res.json(sparePart);
   } catch (error) {
     console.error('Error fetching spare part:', error);
     res.status(500).send({ error: 'Internal server error' });
