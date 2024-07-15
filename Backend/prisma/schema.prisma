@@ -20,12 +20,14 @@ model User {
   province           String?
   userName           String
   imageUrls          String[]
-  OrderSparePart             OrderSparePart[]
+  orders             OrderSparePart[]
   favoriteSpareParts UserFavoriteSparePart[]
-  sellers            Seller?
+  seller             Seller? // Adjusted to possibly relate to multiple sellers
   services           Service[]
   spareParts         SparePart[]
   vehicles           Vehicle[]
+
+  @@map("user")
 }
 
 model Vehicle {
@@ -67,7 +69,7 @@ model ServiceStation {
   updatedAt DateTime @updatedAt
 
   @@id([sellerId, name])
-  @@map("serviceStation")
+  @@map("service_station")
 }
 
 model SparePart {
@@ -90,9 +92,9 @@ model SparePart {
   type            String
   orders          OrderSparePart[]
   favoriteByUsers UserFavoriteSparePart[]
-  user            User?                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user            User?                   @relation(fields: [sellerId], references: [id], onDelete: Cascade)
 
-  @@map("sparePart")
+  @@map("spare_part")
 }
 
 model Service {
@@ -118,7 +120,7 @@ model ServiceServiceStation {
   createdAt DateTime @default(now())
 
   @@id([sellerId, serviceId])
-  @@map("serviceServiceStation")
+  @@map("service_service_station")
 }
 
 model UserSparePart {
@@ -127,7 +129,7 @@ model UserSparePart {
   createdAt   DateTime @default(now())
 
   @@id([userId, sparePartId])
-  @@map("userSparePart")
+  @@map("user_spare_part")
 }
 
 model UserService {
@@ -136,7 +138,7 @@ model UserService {
   createdAt DateTime @default(now())
 
   @@id([userId, serviceId])
-  @@map("userService")
+  @@map("user_service")
 }
 
 model UserFavoriteSparePart {
@@ -157,16 +159,16 @@ model OrderSparePart {
   status      String
   email       String
   name        String
-  phoneNO     String
+  phoneNo     String
   address     String
   sparePart   SparePart @relation(fields: [sparePartId], references: [sparePartId])
   user        User      @relation(fields: [userId], references: [id])
 
-  @@map("OrderSparePart")
+  @@map("order_spare_part")
 }
 
 model Admin {
-  adminID       String @id
+  adminID       String  @id
   email         String
   adminUsername String
   password      String
@@ -175,11 +177,11 @@ model Admin {
   @@map("admin")
 }
 
-model testModel {
+model TestModel {
   id        Int      @id @default(autoincrement())
   photo1    String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("testModel")
+  @@map("test_model")
 }

@@ -17,7 +17,7 @@ export async function deleteUser(req: Request, res: Response) {
             },
             include: {
                 vehicles: true,
-                sellers: true,
+                seller: true,
             },
         });
 

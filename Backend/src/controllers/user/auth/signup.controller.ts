@@ -16,7 +16,7 @@ export const signup = async (req: Request, res: Response) => {
     province,
     district,
     vehicles,
-    sellers,
+    Seller,
     SparePart,
     Service,
     imageUrls
@@ -42,25 +42,14 @@ export const signup = async (req: Request, res: Response) => {
         phoneNo,
         province,
         district,
-        vehicles: { 
-          create: vehicles.map((vehicle: any) => ({
-            ...vehicle,
-            imageUrls: Array.isArray(vehicle.imageUrls) ? vehicle.imageUrls : []
-          }))
-        },
-        sellers: { create: sellers },
-        spareParts: { 
-          create: SparePart.map((part: any) => ({
-            ...part,
-            imageUrls: Array.isArray(part.imageUrls) ? part.imageUrls : []
-          }))
-        },
-        services: { 
-          create: Service.map((service: any) => ({
-            ...service,
-            imageUrls: Array.isArray(service.imageUrls) ? service.imageUrls : []
-          }))
-        }
+        vehicles: { create: vehicles },
+        seller  : { create: Seller },
+        spareParts: { create: SparePart },
+        services: { create: Service },
+        imageUrls: imageUrls ? [imageUrls] : []
+       // imageUrls: [imageUrls]
+        //imageUrls: [imageUrls ]&& Array.isArray(imageUrls) ? imageUrls : [],
+        //imageURLs: { create: images || [] }
       },
     });
 
