@@ -3,21 +3,15 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export async function getUserDetailsByEmail(req: Request, res: Response) {
+export async function getUserDetailsById(req: Request, res: Response) {
 
-    let { email } =  req.params;
-
-    if (!email || typeof email !== 'string') {
-        return res.status(400).json({ error: 'Email query parameter is required' });
-    }
-
-    email = decodeURIComponent(email);
-    console.log('Fetch details of:', email);
+    const { id } =  req.params;
+    console.log('Fetch details of:', id);
 
     try {
         const user = await prisma.user.findUnique({
             where: {
-                email: email,
+                id: Number(id),
             },
             include: {
                 vehicles: false,

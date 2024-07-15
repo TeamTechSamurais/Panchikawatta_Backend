@@ -4,9 +4,9 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export async function getSellerDetails(req: Request, res: Response) {
-    console.log('Fetching seller by email...');
 
     const { userID } =  req.params ;
+    console.log('Fetch details of:', userID);
 
     try {
         const seller = await prisma.seller.findUnique({
@@ -16,8 +16,10 @@ export async function getSellerDetails(req: Request, res: Response) {
         });
 
         if (!seller) {
+            console.log('User is not a seller');
             return res.status(404).json({ error: 'User is not a seller' });
         } else {
+            console.log('Seller found:', seller);
             return res.json(seller);
         }
         
