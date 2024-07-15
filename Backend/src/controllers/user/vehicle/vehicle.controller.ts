@@ -21,7 +21,7 @@ export const createVehicle = async (req: Request, res: Response) => {
         milagePerWeek: 0,
         lastServiceDate: '',
         batteryCondition: '',
-        imageUrls:[imageUrls]
+        imageUrls: imageUrls ? [imageUrls] : []
        //imageUrls: [imageUrls ]&& Array.isArray(imageUrls) ? imageUrls : [],
       },
     });

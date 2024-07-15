@@ -20,7 +20,7 @@ model User {
   province           String?
   userName           String
   imageUrls          String[]
-  orders             OrderSparePart[]
+  OrderSparePart     OrderSparePart[]
   favoriteSpareParts UserFavoriteSparePart[]
   sellers            Seller?
   services           Service[]
@@ -161,6 +161,8 @@ model OrderSparePart {
   address     String
   sparePart   SparePart @relation(fields: [sparePartId], references: [sparePartId])
   user        User      @relation(fields: [userId], references: [id])
+
+  @@map("OrderSparePart")
 }
 
 model Admin {

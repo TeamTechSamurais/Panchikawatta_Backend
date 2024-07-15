@@ -46,7 +46,8 @@ export const signup = async (req: Request, res: Response) => {
         sellers: { create: sellers },
         spareParts: { create: SparePart },
         services: { create: Service },
-        imageUrls: [imageUrls]
+        imageUrls: imageUrls ? [imageUrls] : []
+       // imageUrls: [imageUrls]
         //imageUrls: [imageUrls ]&& Array.isArray(imageUrls) ? imageUrls : [],
         //imageURLs: { create: images || [] }
       },
