@@ -8,10 +8,10 @@ import admin from 'firebase-admin';
 import jwt from 'jsonwebtoken'; // Import the 'jsonwebtoken' library
 import serviceAccount from 'C:/Users/Shehara Fernando/OneDrive/Desktop/Panchikawatta/Backend/Panchikawatta_Backend/Backend/panchikawatta-d9e2e-firebase-adminsdk-42fm8-e29b1feb43.json';
 
-admin.initializeApp({
-  credential: admin.credential.applicationDefault(),
-  projectId: serviceAccount.project_id,
-});
+// admin.initializeApp({
+//   credential: admin.credential.applicationDefault(),
+//   projectId: serviceAccount.project_id,
+// });
 
 const app: Express = express();
 

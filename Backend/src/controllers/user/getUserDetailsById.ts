@@ -15,7 +15,7 @@ export async function getUserDetailsById(req: Request, res: Response) {
             },
             include: {
                 vehicles: false,
-                sellers: false,
+                seller: false,
             },
         });
 

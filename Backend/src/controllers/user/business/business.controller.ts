@@ -1,30 +1,3 @@
-// // business.ts
-
-// import { Request, Response } from 'express';
-// import { PrismaClient } from '@prisma/client';
-
-// const prisma = new PrismaClient();
-// // Create a new business
-// export const createBusiness = async (req: Request, res: Response) => {
-//     const { userId, businessName, businessAddress, businessContactno, businessDescription } = req.body;
-//     console.log('Received signup request:', req.body);
-//     try {
-//       const business = await prisma.business.create({
-//         data: {
-//           userId,
-//           BusinessName: businessName,
-//           BusinessAddress: businessAddress,
-//           BusinessContactno: businessContactno,
-//           Businessdescrption: businessDescription,
-//         },
-//       });
-  
-//       res.status(201).json(business);
-//     } catch (error) {
-//       console.error('Error creating business:', error);
-//       res.status(500).json({ error: 'Failed to create business' });
-//     }
-//   };
 import { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
 

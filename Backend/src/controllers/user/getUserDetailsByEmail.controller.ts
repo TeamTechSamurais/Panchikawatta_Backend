@@ -21,7 +21,7 @@ export async function getUserDetailsByEmail(req: Request, res: Response) {
             },
             include: {
                 vehicles: false,
-                sellers: false,
+                seller: false,
             },
         });
 

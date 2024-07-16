@@ -11,7 +11,7 @@ export const placeOrder = async (req: Request, res: Response) => {
             data: {
                 name,
                 email,
-                phoneNO,
+                phoneNo: phoneNO,
                 address,
                 status: 'Pending',
                 sparePartId: 1,  // Modify based on actual requirements

@@ -4,11 +4,11 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export const getSparePartById = async (req: Request, res: Response) => {
-  const { id } = req.params;
+  const { sparePartId } = req.params;
 
   try {
     const sparePart = await prisma.sparePart.findUnique({
-      where: { sparePartId: Number(id) },
+      where: { sparePartId: Number(sparePartId) },
     });
 
     if (!sparePart) {
@@ -34,7 +34,7 @@ export async function getServiceById(req: Request, res: Response) {
       return res.status(404).send({ error: 'Service not found' });
     }
 
-    res.json(service);
+    res.json(service);7
   } catch (error) {
     console.error('Error fetching service:', error);
     res.status(500).send({ error: 'Internal server error' });
