@@ -8,6 +8,8 @@ import admin from 'firebase-admin';
 import jwt from 'jsonwebtoken'; // Import the 'jsonwebtoken' library
 import serviceAccount from 'C:/Users/Pahancode/Desktop/final_backend/Panchikawatta_Backend/panchikawatta-d9e2e-firebase-adminsdk-42fm8-d6a3dbf461.json';
 
+
+
 admin.initializeApp({
   credential: admin.credential.applicationDefault(),
   projectId: serviceAccount.project_id,

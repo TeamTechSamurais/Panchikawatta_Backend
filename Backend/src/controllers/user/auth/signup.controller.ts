@@ -16,7 +16,7 @@ export const signup = async (req: Request, res: Response) => {
     province,
     district,
     vehicles,
-    sellers,
+    Seller,
     SparePart,
     Service,
     imageUrls
@@ -46,10 +46,13 @@ export const signup = async (req: Request, res: Response) => {
         province,
         district,
         vehicles: { create: vehicles },
-        sellers: { create: sellers },
+        seller  : { create: Seller },
         spareParts: { create: SparePart },
         services: { create: Service },
-        imageUrls: imageUrlArray
+        imageUrls: imageUrls ? [imageUrls] : []
+       // imageUrls: [imageUrls]
+        //imageUrls: [imageUrls ]&& Array.isArray(imageUrls) ? imageUrls : [],
+        //imageURLs: { create: images || [] }
       },
     });
 

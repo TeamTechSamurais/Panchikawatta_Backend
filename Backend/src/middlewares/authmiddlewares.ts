@@ -55,6 +55,8 @@
 // //   }
 // // };
 import { Request, Response, NextFunction } from 'express';
+import { JWT_SECRET } from '../config/config';
+import jwt from 'jsonwebtoken'; // Import jsonwebtoken
 
 export const authenticateUser = (req: Request, res: Response, next: NextFunction) => {
   // Your authentication logic here
@@ -67,6 +69,7 @@ export const authenticateUser = (req: Request, res: Response, next: NextFunction
   // Verify token logic here
   // If valid, call next()
   // If invalid, respond with an error
+
 
   next();
 };

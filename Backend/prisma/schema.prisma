@@ -20,12 +20,14 @@ model User {
   province           String?
   userName           String
   imageUrls          String[]
-  OrderSparePart     OrderSparePart[]
+  orders             OrderSparePart[]
   favoriteSpareParts UserFavoriteSparePart[]
-  sellers            Seller?
+  seller             Seller?
   services           Service[]
   spareParts         SparePart[]
   vehicles           Vehicle[]
+
+  @@map("user")
 }
 
 model Vehicle {
@@ -67,7 +69,7 @@ model ServiceStation {
   updatedAt DateTime @updatedAt
 
   @@id([sellerId, name])
-  @@map("serviceStation")
+  @@map("service_station")
 }
 
 model SparePart {
@@ -90,7 +92,7 @@ model SparePart {
   type            String
   orders          OrderSparePart[]
   favoriteByUsers UserFavoriteSparePart[]
-  user            User?                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user            User?                   @relation(fields: [sellerId], references: [id], onDelete: Cascade)
 
   @@map("sparePart")
 }
@@ -147,6 +149,7 @@ model UserFavoriteSparePart {
   user        User      @relation(fields: [userId], references: [id])
 
   @@id([userId, sparePartId])
+  @@map("userFavoriteSparePart")
 }
 
 model OrderSparePart {
@@ -157,17 +160,17 @@ model OrderSparePart {
   status      String
   email       String
   name        String
-  phoneNO     String
+  phoneNo     String
   address     String
   sparePart   SparePart @relation(fields: [sparePartId], references: [sparePartId])
   user        User      @relation(fields: [userId], references: [id])
 
-  @@map("OrderSparePart")
+  @@map("orderSparePart")
 }
 
 model Admin {
-  adminID       String @id
-  email         String
+  adminID       String  @id
+  email         String  @unique
   adminUsername String
   password      String
   imageUrls     String?
@@ -175,11 +178,3 @@ model Admin {
   @@map("admin")
 }
 
-model testModel {
-  id        Int      @id @default(autoincrement())
-  photo1    String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("testModel")
-}

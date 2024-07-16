@@ -5,24 +5,25 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export const placeOrder = async (req: Request, res: Response) => {
-    const { name, email, phoneNO, address } = req.body;
+    const { name, email, phoneNo, address, userId, sparePartId } = req.body;
     try {
         const newOrder = await prisma.orderSparePart.create({
             data: {
                 name,
                 email,
-                phoneNO,
+                phoneNo,
                 address,
                 status: 'Pending',
-                sparePartId: 1,  // Modify based on actual requirements
-                userId: 1,       // Modify based on actual requirements
+                sparePartId: sparePartId,  // Use sparePartId from the request body
+                userId: userId,            // Use userId from the request body
             }
         });
         res.status(201).json(newOrder);
-    } catch (error) {
-        res.status(400).json({ error: `An error occurred:` });
+    } catch (error: any) {
+        res.status(400).json({ error: `An error occurred: ${error.message}` });
     }
 };
+
 
 export const finalizeOrder = async (req: Request, res: Response) => {
     const { orderId } = req.body;

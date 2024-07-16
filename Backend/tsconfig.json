@@ -110,5 +110,5 @@
   "include": [
     "src/**/*.ts",
     "custom.d.ts" // Ensure this is included
-  ]
+, "types/custom.d.ts"  ]
 }
