@@ -24,13 +24,17 @@ export function configureadListingRoutes(router: Router) {
     router.post('/placeOrder', placeOrder);
     router.post('/finalizeOrder', finalizeOrder);
     
-// Routes for buyer
-router.get('/buyer-orders', authenticateUser, getBuyerOrders);
-router.post('/buyer-orders/delivered', authenticateUser, markOrderAsDelivered);
+// Route for fetching buyer orders
+router.get('/orders/getByUserId/:userId', getBuyerOrders);
 
-// Routes for seller
-router.get('/seller-orders', authenticateUser, getSellerOrders);
-router.post('/seller-orders/dispatched', authenticateUser, markOrderAsDispatched);
+// Route for fetching seller orders
+router.get('/orders/getBySellerId/:sellerId', getSellerOrders);
+
+// Route for marking an order as dispatched
+router.post('/orders/markAsDispatched', markOrderAsDispatched);
+
+// Route for marking an order as delivered
+router.post('/orders/markAsDelivered', markOrderAsDelivered);
 
     router.post('/add-to-favorites', addToFavorites);
     router.get('/favorites/:userId', getFavoritesByUser);

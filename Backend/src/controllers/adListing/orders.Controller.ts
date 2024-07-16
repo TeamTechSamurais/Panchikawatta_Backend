@@ -1,15 +1,9 @@
 import { Request, Response } from 'express';
 import { prismaClient } from '../..';
 
-interface AuthenticatedRequest extends Request {
-  user?: {
-    id: string;
-  };
-}
-
 // Fetch orders for a user (buyer)
 export const getBuyerOrders = async (req: Request, res: Response) => {
-  const userId = (req as AuthenticatedRequest).user?.id;
+  const { userId } = req.params;
 
   if (!userId) {
     return res.status(400).json({ error: 'User ID is required' });
@@ -28,7 +22,7 @@ export const getBuyerOrders = async (req: Request, res: Response) => {
 
 // Fetch orders for a seller
 export const getSellerOrders = async (req: Request, res: Response) => {
-  const sellerId = (req as AuthenticatedRequest).user?.id;
+  const { sellerId } = req.params;
 
   if (!sellerId) {
     return res.status(400).json({ error: 'Seller ID is required' });

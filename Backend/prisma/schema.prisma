@@ -22,7 +22,7 @@ model User {
   imageUrls          String[]
   orders             OrderSparePart[]
   favoriteSpareParts UserFavoriteSparePart[]
-  seller             Seller? // Adjusted to possibly relate to multiple sellers
+  seller             Seller?
   services           Service[]
   spareParts         SparePart[]
   vehicles           Vehicle[]
@@ -94,7 +94,7 @@ model SparePart {
   favoriteByUsers UserFavoriteSparePart[]
   user            User?                   @relation(fields: [sellerId], references: [id], onDelete: Cascade)
 
-  @@map("spare_part")
+  @@map("sparePart")
 }
 
 model Service {
@@ -120,7 +120,7 @@ model ServiceServiceStation {
   createdAt DateTime @default(now())
 
   @@id([sellerId, serviceId])
-  @@map("service_service_station")
+  @@map("serviceServiceStation")
 }
 
 model UserSparePart {
@@ -129,7 +129,7 @@ model UserSparePart {
   createdAt   DateTime @default(now())
 
   @@id([userId, sparePartId])
-  @@map("user_spare_part")
+  @@map("userSparePart")
 }
 
 model UserService {
@@ -138,7 +138,7 @@ model UserService {
   createdAt DateTime @default(now())
 
   @@id([userId, serviceId])
-  @@map("user_service")
+  @@map("userService")
 }
 
 model UserFavoriteSparePart {
@@ -149,6 +149,7 @@ model UserFavoriteSparePart {
   user        User      @relation(fields: [userId], references: [id])
 
   @@id([userId, sparePartId])
+  @@map("userFavoriteSparePart")
 }
 
 model OrderSparePart {
@@ -164,12 +165,12 @@ model OrderSparePart {
   sparePart   SparePart @relation(fields: [sparePartId], references: [sparePartId])
   user        User      @relation(fields: [userId], references: [id])
 
-  @@map("order_spare_part")
+  @@map("orderSparePart")
 }
 
 model Admin {
   adminID       String  @id
-  email         String
+  email         String  @unique
   adminUsername String
   password      String
   imageUrls     String?
@@ -177,11 +178,3 @@ model Admin {
   @@map("admin")
 }
 
-model TestModel {
-  id        Int      @id @default(autoincrement())
-  photo1    String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("test_model")
-}
