@@ -17,7 +17,7 @@ export async function deleteUser(req: Request, res: Response) {
             },
             include: {
                 vehicles: true,
-                sellers: true,
+                seller: true,
             },
         });
 
@@ -27,12 +27,16 @@ export async function deleteUser(req: Request, res: Response) {
 
         if (user.deletedAt == null) {
             await prisma.user.update({
-                where: {
-                    email: email,
-                },
-                data: {
-                    deletedAt: new Date(),
-                },
+                where: { email: email,},
+                data: { deletedAt: new Date()},
+            });
+            await prisma.vehicle.updateMany({
+                where: { userId: user.id },
+                data: { deletedAt: new Date() },
+            });
+            await prisma.service.updateMany({
+                where: { sellerId: user.id },
+                data: { deletedAt: new Date() },
             });
         } 
 

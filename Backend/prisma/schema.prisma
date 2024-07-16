@@ -21,11 +21,13 @@ model User {
   userName           String
   imageUrls          String[]
   orders             OrderSparePart[]
-  favoriteSpareParts UserFavoriteSparePart[]
-  sellers            Seller?
+  seller             Seller?
   services           Service[]
   spareParts         SparePart[]
+  favoriteSpareParts UserFavoriteSparePart[]
   vehicles           Vehicle[]
+
+  @@map("user")
 }
 
 model Vehicle {
@@ -40,7 +42,7 @@ model Vehicle {
   lastServiceDate  String
   make             String
   type             String
-  imageUrls        String[]
+  imageUrls        String?
   createdAt        DateTime?
   deletedAt        DateTime?
   user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -67,7 +69,7 @@ model ServiceStation {
   updatedAt DateTime @updatedAt
 
   @@id([sellerId, name])
-  @@map("serviceStation")
+  @@map("service_station")
 }
 
 model SparePart {
@@ -89,8 +91,8 @@ model SparePart {
   imageUrls       String[]
   type            String
   orders          OrderSparePart[]
+  user            User                    @relation(fields: [sellerId], references: [id], onDelete: Cascade)
   favoriteByUsers UserFavoriteSparePart[]
-  user            User?                   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("sparePart")
 }
@@ -147,6 +149,7 @@ model UserFavoriteSparePart {
   user        User      @relation(fields: [userId], references: [id])
 
   @@id([userId, sparePartId])
+  @@map("userFavoriteSparePart")
 }
 
 model OrderSparePart {
@@ -157,26 +160,20 @@ model OrderSparePart {
   status      String
   email       String
   name        String
-  phoneNO     String
+  phoneNo     String
   address     String
   sparePart   SparePart @relation(fields: [sparePartId], references: [sparePartId])
   user        User      @relation(fields: [userId], references: [id])
+
+  @@map("orderSparePart")
 }
 
 model Admin {
-  adminID       String @id
-  email         String
+  adminID       String  @id
+  email         String  @unique
   adminUsername String
   password      String
+  imageUrls     String?
 
   @@map("admin")
-}
-
-model testModel {
-  id        Int      @id @default(autoincrement())
-  photo1    String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("testModel")
 }

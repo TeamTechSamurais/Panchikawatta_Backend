@@ -23,11 +23,9 @@ export const sendNotification = async (req: Request, res: Response) => {
   }
 
   try {
-    console.log('i');
     // Get the receiver's FCM token from Firestore
-    //const userDoc = await admin.firestore().collection('users').doc(receiverId).get();
-    console.log('ii');
-    const fcmToken =  'dEiXs87jRfKR_M2r7eLude:APA91bGPH7uEMVGW4-6Yp7Jc7wpMGCj_4n0lpQ6ApNoLV3rmI__1y669m-y0tdiv_4OtCsWMH6p2Dj-h47UKwAPUUPPnVgx9BUmuBoE7lg0eggJ-afh8cE7IFHuP3V7eARn5otv67Hfu'; //userDoc.data()?.fcmToken;
+    const userDoc = await admin.firestore().collection('users').doc(receiverId).get();
+    const fcmToken =  userDoc.data()?.fcmToken; //'dEiXs87jRfKR_M2r7eLude:APA91bGPH7uEMVGW4-6Yp7Jc7wpMGCj_4n0lpQ6ApNoLV3rmI__1y669m-y0tdiv_4OtCsWMH6p2Dj-h47UKwAPUUPPnVgx9BUmuBoE7lg0eggJ-afh8cE7IFHuP3V7eARn5otv67Hfu';
 
     if (!fcmToken) {
       console.log('Receiver does not have a valid FCM token');

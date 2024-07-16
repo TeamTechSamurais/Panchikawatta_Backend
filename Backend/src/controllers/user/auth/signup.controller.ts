@@ -42,25 +42,12 @@
 //         phoneNo,
 //         province,
 //         district,
-//         vehicles: { 
-//           create: vehicles.map((vehicle: any) => ({
-//             ...vehicle,
-//             imageUrls: Array.isArray(vehicle.imageUrls) ? vehicle.imageUrls : []
-//           }))
-//         },
+//         vehicles: { create: vehicles },
 //         sellers: { create: sellers },
-//         spareParts: { 
-//           create: SparePart.map((part: any) => ({
-//             ...part,
-//             imageUrls: Array.isArray(part.imageUrls) ? part.imageUrls : []
-//           }))
-//         },
-//         services: { 
-//           create: Service.map((service: any) => ({
-//             ...service,
-//             imageUrls: Array.isArray(service.imageUrls) ? service.imageUrls : []
-//           }))
-//         }
+//         spareParts: { create: SparePart },
+//         services: { create: Service },
+//         imageUrls: [imageUrls ]&& Array.isArray(imageUrls) ? imageUrls : [],
+//         //imageURLs: { create: images || [] }
 //       },
 //     });
 
@@ -118,14 +105,7 @@
 //     console.error('Error deleting user:', error);
 //     res.status(500).json({ error: 'Failed to delete user' });
 //   }
-// };
-
-
-
-
-
-
-
+// }
 
 
 import { Request, Response } from 'express';
@@ -146,7 +126,7 @@ export const signup = async (req: Request, res: Response) => {
     province,
     district,
     vehicles,
-    sellers,
+    Seller,
     SparePart,
     Service,
     imageUrls
@@ -173,10 +153,12 @@ export const signup = async (req: Request, res: Response) => {
         province,
         district,
         vehicles: { create: vehicles },
-        sellers: { create: sellers },
+        seller  : { create: Seller },
         spareParts: { create: SparePart },
         services: { create: Service },
-        imageUrls: [imageUrls ]&& Array.isArray(imageUrls) ? imageUrls : [],
+        imageUrls: imageUrls ? [imageUrls] : []
+       // imageUrls: [imageUrls]
+        //imageUrls: [imageUrls ]&& Array.isArray(imageUrls) ? imageUrls : [],
         //imageURLs: { create: images || [] }
       },
     });
@@ -235,4 +217,4 @@ export const deleteUser = async (req: Request, res: Response) => {
     console.error('Error deleting user:', error);
     res.status(500).json({ error: 'Failed to delete user' });
   }
-}
+};
