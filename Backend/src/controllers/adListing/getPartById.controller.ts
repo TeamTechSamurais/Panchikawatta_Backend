@@ -4,6 +4,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export const getSparePartById = async (req: Request, res: Response) => {
+export const getSparePartById = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
