@@ -177,4 +177,3 @@ model Admin {
 
   @@map("admin")
 }
-
