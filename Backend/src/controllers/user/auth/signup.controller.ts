@@ -140,6 +140,9 @@ export const signup = async (req: Request, res: Response) => {
       return res.status(409).json({ error: 'The email address is already in use' });
     }
 
+    // Ensure imageUrls is an array
+    const imageUrlArray = imageUrls ? [imageUrls] : [];
+
     // Create new user
     const hashedPassword = hashSync(password, 10);
     const user = await prisma.user.create({

@@ -20,7 +20,7 @@ export const getSpareparts = async (req: Request, res: Response) => {
       orderBy: {
         sparePartId: 'desc'
       },
-      take: 10,
+      take: 15,
       include: {
         user: true, // Include user relation if needed
       },

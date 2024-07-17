@@ -21,7 +21,8 @@ model User {
   userName           String
   imageUrls          String[]
   orders             OrderSparePart[]
-  seller             Seller?
+  favoriteSpareParts UserFavoriteSparePart[]
+  sellers            Seller?
   services           Service[]
   spareParts         SparePart[]
   favoriteSpareParts UserFavoriteSparePart[]
@@ -93,6 +94,7 @@ model SparePart {
   orders          OrderSparePart[]
   user            User                    @relation(fields: [sellerId], references: [id], onDelete: Cascade)
   favoriteByUsers UserFavoriteSparePart[]
+  user            User?                   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("sparePart")
 }
@@ -176,4 +178,13 @@ model Admin {
   imageUrls     String?
 
   @@map("admin")
+}
+
+model testModel {
+  id        Int      @id @default(autoincrement())
+  photo1    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("testModel")
 }

@@ -4,7 +4,7 @@ import moment from 'moment';
 
 const prisma = new PrismaClient();
 
-const calculateNearestReminder = (vehicle: any) => {
+export const calculateNearestReminder = (vehicle: any) => {
   const now = moment();
   const licenseDate = moment(vehicle.licenceDate, 'DD/MM/YYYY').add(1, 'year');
   const insuranceDate = moment(vehicle.insuranceDate, 'DD/MM/YYYY').add(1, 'year');
@@ -26,10 +26,10 @@ const calculateNearestReminder = (vehicle: any) => {
   const nextBatteryCheckDate = lastServiceDate.clone().add(batteryCheckInterval, 'months');
 
   const reminders = [
-    { type: 'License Renewal', date: licenseDate },
-    { type: 'Insurance Renewal', date: insuranceDate },
-    { type: 'Next Service', date: nextServiceDate },
-    { type: 'Battery Check', date: nextBatteryCheckDate }
+    { type: 'License Renewal is due', date: licenseDate },
+    { type: 'Insurance Renewal is due', date: insuranceDate },
+    { type: 'Next Service is due', date: nextServiceDate },
+    { type: 'Battery Check is due', date: nextBatteryCheckDate }
   ];
 
   const futureReminders = reminders.filter(reminder => reminder.date.isAfter(now));
@@ -59,8 +59,8 @@ export const getUserVehicleReminders = async (req: Request, res: Response) => {
     const vehiclesWithReminders = vehicles.map(vehicle => {
       const nearestReminder = calculateNearestReminder(vehicle);
       if (nearestReminder) {
-      const formattedDate = nearestReminder.date.format('DD/MM/YYYY');
-      return { ...vehicle, nearestReminder: { type: nearestReminder.type, date: formattedDate } };
+        const formattedDate = nearestReminder.date.format('DD/MM/YYYY');
+        return { ...vehicle, nearestReminder: { type: nearestReminder.type, date: formattedDate } };
       }
       return { ...vehicle, nearestReminder };
     });
@@ -71,13 +71,36 @@ export const getUserVehicleReminders = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteReminder = async (req: Request, res: Response) => {
+export const markAsDone = async (req: Request, res: Response) => {
   try {
-    const { vehicleId } = req.params;
-    await prisma.vehicle.delete({
+    const { vehicleId, reminderType } = req.params;
+    const today = moment().format('DD/MM/YYYY');
+
+    let updateData: any = {};
+
+    switch (reminderType) {
+      case 'License Renewal is due':
+        updateData.licenceDate = today;
+        break;
+      case 'Insurance Renewal is due':
+        updateData.insuranceDate = today;
+        break;
+      case 'Next Service is due':
+        updateData.lastServiceDate = today;
+        break;
+      case 'Battery Check is due':
+        updateData.lastServiceDate = today;
+        break;
+      default:
+        return res.status(400).json({ error: 'Invalid reminder type' });
+    }
+
+    await prisma.vehicle.update({
       where: { vehicleId: parseInt(vehicleId) },
+      data: updateData,
     });
-    res.status(200).json({ message: 'Reminder deleted successfully' });
+
+    res.status(200).json({ message: 'Reminder marked as done successfully' });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }

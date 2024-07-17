@@ -39,7 +39,7 @@ export const searchServices = async (req: Request, res: Response) => {
   const { keyword } = req.query;
 
   try {
-    const service = await prisma.sparePart.findMany({
+    const service = await prisma.service.findMany({
       where: {
         OR: [
           {
@@ -65,7 +65,7 @@ export const searchServices = async (req: Request, res: Response) => {
 
     res.json(formattedServices);
   } catch (error) {
-    console.error('Error searching spare parts:', error);
+    console.error('Error searching services:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
