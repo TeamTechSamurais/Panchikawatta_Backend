@@ -11,7 +11,7 @@ export const placeOrder = async (req: Request, res: Response) => {
             data: {
                 name,
                 email,
-                phoneNo: phoneNO,
+                phoneNo,
                 address,
                 status: 'Pending',
                 sparePartId: sparePartId,  // Use sparePartId from the request body

@@ -5,8 +5,6 @@ const prisma = new PrismaClient();
 
 export async function getFilteredAds(req: Request, res: Response) {
   const {
-    // province,
-    // district,
     vehicleType,
     vehicleMake,
     model,
@@ -23,9 +21,7 @@ export async function getFilteredAds(req: Request, res: Response) {
     const ads = await prisma.sparePart.findMany({
       where: {
         AND: [
-          // province ? { user: { province: String(province) } } : {},
-          // district ? { user: { district: String(district) } } : {},
-          vehicleType ? { type: String(vehicleType ) } : {},
+          vehicleType ? { type: String(vehicleType) } : {},
           vehicleMake ? { make: String(vehicleMake) } : {},
           model ? { model: String(model) } : {},
           origin ? { origin: String(origin) } : {},
@@ -42,7 +38,6 @@ export async function getFilteredAds(req: Request, res: Response) {
       },
     });
 
-    // Attach the imageUrls if they are present
     const adsWithImages = ads.map(ad => ({
       ...ad,
       images: ad.imageUrls.length > 0 ? ad.imageUrls : [],
