@@ -7,7 +7,7 @@ import { getServices, searchServices } from '../../controllers/adListing/getServ
 import { getSortedServices, getSortedSpareParts } from '../../controllers/adListing/adSort.controller';
 
 import { finalizeOrder, placeOrder } from '../../controllers/adListing/orderManagment.controller';
-import { addToFavorites, getFavoritesByUser } from '../../controllers/adListing/userFavoriteSparePart.controller';
+import { addToFavorites, getFavoritesByUser, searchWishlist } from '../../controllers/adListing/userFavoriteSparePart.controller';
 import { authenticateUser } from '../../middlewares/authmiddlewares';
 import { getBuyerOrders, getSellerOrders, markOrderAsDelivered, markOrderAsDispatched } from '../../controllers/adListing/orders.Controller';
 
@@ -34,8 +34,14 @@ router.get('/orders/getBySellerId/:sellerId', getSellerOrders);
 router.post('/orders/markAsDispatched', markOrderAsDispatched);
 
 // Route for marking an order as delivered
-router.post('/orders/markAsDelivered', markOrderAsDelivered);
+router.post('/orders/markAsDelivered/:orderId', markOrderAsDelivered);
 
-    router.post('/add-to-favorites', addToFavorites);
-    router.get('/favorites/:userId', getFavoritesByUser);
+// Route to add a spare part to favorites
+router.post('/add-to-favorites', addToFavorites);
+
+// Route to get all favorites for a user
+router.get('/favorites/:userId', getFavoritesByUser);
+
+// Route to search within a user's wishlist
+router.get('/favorites/:userId/search', searchWishlist);
 }

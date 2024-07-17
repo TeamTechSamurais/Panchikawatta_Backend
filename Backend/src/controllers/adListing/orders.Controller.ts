@@ -60,10 +60,15 @@ export const markOrderAsDispatched = async (req: Request, res: Response) => {
 
 // Update order status to delivered (buyer action)
 export const markOrderAsDelivered = async (req: Request, res: Response) => {
-  const { orderId } = req.body;
+  const { orderId } = req.params;
+  const { userId } = req.body;
 
   if (!orderId) {
     return res.status(400).json({ error: 'Order ID is required' });
+  }
+
+  if (!userId) {
+    return res.status(400).json({ error: 'User ID is required' });
   }
 
   try {
