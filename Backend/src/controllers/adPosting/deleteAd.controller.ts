@@ -25,26 +25,3 @@ export const deleteServiceById = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal server error', details: error.message });
   }
 };
-
-export const deleteSparepartById = async (req: Request, res: Response) => {
-    const { sparePartId } = req.params;
-  
-    if (!sparePartId) {
-      return res.status(400).json({ error: 'id is required' });
-    }
-  
-    try {
-      const sparePart = await prisma.sparePart.delete({
-        where: {
-            sparePartId: parseInt(sparePartId),
-        },
-      });
-  
-      res.status(200).json({ message: 'Service deleted successfully', sparePart });
-    } catch (error:any) {
-      if (error.code === 'P2025') { // Prisma specific error code for not found
-        return res.status(404).json({ error: 'Service not found' });
-      }
-      res.status(500).json({ error: 'Internal server error', details: error.message });
-    }
-  };
