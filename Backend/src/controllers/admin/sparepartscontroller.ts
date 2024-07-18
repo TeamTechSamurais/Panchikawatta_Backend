@@ -27,8 +27,13 @@ export const getSparePartDetails = async (req: Request, res: Response) => {
     }
 
     // Extract necessary details
-    const { title, description, price, createdAt } = sparePart;
+    const { title, description, price, createdAt, imageUrls } = sparePart;
     const { businessName, businessAddress } = seller;
+
+    // Ensure image URLs are absolute
+    const absoluteImageUrls = imageUrls.map((url: string) => 
+      url.startsWith('http') ? url : `http://10.0.2.2:8000/${url}`
+    );
 
     // Construct response data
     const responseData = {
@@ -36,6 +41,7 @@ export const getSparePartDetails = async (req: Request, res: Response) => {
       description,
       price,
       createdAt,
+      imageUrls: absoluteImageUrls.length > 0 ? absoluteImageUrls : ['https://via.placeholder.com/200'], // Ensure there is at least one image URL
       businessName,
       businessAddress,
     };
@@ -46,6 +52,7 @@ export const getSparePartDetails = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Failed to fetch spare part details' });
   }
 };
+
 
 export async function getAllSpareParts(req: Request, res: Response): Promise<void> {
   try {
@@ -60,4 +67,10 @@ export async function getAllSpareParts(req: Request, res: Response): Promise<voi
     res.status(500).json({ error: 'Internal server error' });
   }
 }
+
+
+
+
+
+
 

@@ -27,8 +27,13 @@ export const getServiceDetails = async (req: Request, res: Response) => {
     }
 
     // Extract necessary details
-    const { title, description, price,createdAt} = service;
+    const { title, description, price, createdAt, imageUrls } = service;
     const { businessName, businessAddress } = seller;
+
+    // Ensure image URLs are absolute
+    const absoluteImageUrls = imageUrls.map((url: string) => 
+      url.startsWith('http') ? url : `http://10.0.2.2:8000/${url}`
+    );
 
     // Construct response data
     const responseData = {
@@ -36,6 +41,7 @@ export const getServiceDetails = async (req: Request, res: Response) => {
       description,
       price,
       createdAt,
+      imageUrls: absoluteImageUrls.length > 0 ? absoluteImageUrls : ['https://via.placeholder.com/200'], // Ensure there is at least one image URL
       businessName,
       businessAddress,
     };

@@ -31,7 +31,15 @@ export const getSparePartsByDate = async (req: Request, res: Response) => {
       },
     });
 
-    res.status(200).json(spareParts);
+    // Construct absolute image URLs
+    const sparePartsWithAbsoluteUrls = spareParts.map(part => ({
+      ...part,
+      imageUrls: part.imageUrls.map(url =>
+        url.startsWith('http') ? url : `http://10.0.2.2:8000/${url}`
+      ),
+    }));
+
+    res.status(200).json(sparePartsWithAbsoluteUrls);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'An error occurred while fetching spare parts' });
