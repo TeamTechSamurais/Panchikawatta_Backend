@@ -9,7 +9,7 @@ import { getSortedServices, getSortedSpareParts } from '../../controllers/adList
 import { finalizeOrder, placeOrder } from '../../controllers/adListing/orderManagment.controller';
 import { addToFavorites, getFavoritesByUser, searchWishlist } from '../../controllers/adListing/userFavoriteSparePart.controller';
 import { authenticateUser } from '../../middlewares/authmiddlewares';
-import { getBuyerOrders, getSellerOrders, markOrderAsDelivered, markOrderAsDispatched } from '../../controllers/adListing/orders.Controller';
+import { deleteOrder, getBuyerOrders, getSellerOrders, markOrderAsDelivered, markOrderAsDispatched } from '../../controllers/adListing/orders.Controller';
 
 export function configureadListingRoutes(router: Router) {
     router.get('/search', searchSpareParts);
@@ -36,6 +36,9 @@ router.post('/orders/markAsDispatched', markOrderAsDispatched);
 // Route for marking an order as delivered
 router.post('/orders/markAsDelivered/:orderId', markOrderAsDelivered);
 
+// Route to delete order (cancel order)
+router.delete('/orders/delete/:orderId', deleteOrder);
+
 // Route to add a spare part to favorites
 router.post('/add-to-favorites', addToFavorites);
 
@@ -44,4 +47,6 @@ router.get('/favorites/:userId', getFavoritesByUser);
 
 // Route to search within a user's wishlist
 router.get('/favorites/:userId/search', searchWishlist);
+
+
 }

@@ -81,3 +81,21 @@ export const markOrderAsDelivered = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Failed to update order status' });
   }
 };
+
+// Delete an order (cancel order)
+export const deleteOrder = async (req: Request, res: Response) => {
+  const { orderId } = req.params;
+
+  if (!orderId) {
+    return res.status(400).json({ error: 'Order ID is required' });
+  }
+
+  try {
+    await prismaClient.orderSparePart.delete({
+      where: { orderId: parseInt(orderId) },
+    });
+    res.status(200).json({ message: 'Order deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to delete order' });
+  }
+};
