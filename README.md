@@ -14,7 +14,7 @@ Backend services for Panchikawatta, a mobile marketplace application for buying 
 - Backend support for real-time chat and profile management features
 
 ## Team
-Built collaboratively by a 3-member team (TeamTechSamurais) as an academic group project.
+Built collaboratively by a 5-member team (TeamTechSamurais) as an academic group project.
 
 ## Project Status
 Core backend features implemented, including order management and API endpoints supporting the mobile app. Refinements ongoing.
